@@ -32,16 +32,20 @@
     export default {
         data(){
             return {
-                homeData: Object
+                homeData: Object,
             }
         },
         mounted(){
-            getHomeData({accountId: 1, page: 1, pageSize: 1}).then((res) => {
-                this.homeData = res[1];
-                console.log(this.homeData);
-            });
+            getHomeData(
+                {
+                    accountId: 1, page: 2, pageSize: 1,
+                    accessToken: 'c89659c38becc80574d638706b018f40'
+                })
+                .then((res) => {
+                    this.homeData = res.data[0];
+                    // console.log(this.homeData);
+                });
         },
-        methods: {},
         components: {
             'content-nav': contentNav
         }

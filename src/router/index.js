@@ -50,6 +50,12 @@ const Comment = (resolve) => {
     })
 }
 
+const Mdetails = (resolve) => {
+    import('components/mucdetail/mucdetail').then((module) => {
+        resolve(module)
+    })
+}
+
 // const home = r => require.ensure([], () => r(require('@/components/Home')), 'home');
 
 // 路由实例
@@ -72,7 +78,7 @@ export default new Router({
             children: [
                 {
                     path: '/homepage/music',
-                    component: Music
+                    component: Music,
                 },
                 {
                     path: '/homepage/lines',
@@ -100,5 +106,9 @@ export default new Router({
             path: '/main',
             component: Main,
         },
+        {
+            path: '/homepage/music/mucdetail',
+            component: Mdetails
+        }
     ]
 });

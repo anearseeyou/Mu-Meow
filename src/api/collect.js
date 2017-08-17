@@ -3,8 +3,8 @@ import qs from 'qs'
 
 export const ERR_OK = 0;
 
-export function getHomeData(params) {
-    const url = 'http://192.168.0.244:8081/web/m2/index.do';
+export function collection(params) {
+    const url = 'http://192.168.0.244:8081/web/m2/consumerCollect.do';
     const data = Object.assign({}, params);
     const headers = {
         headers: {
