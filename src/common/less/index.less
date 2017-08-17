@@ -1,0 +1,261 @@
+@import "base";
+
+
+/* ------------------------------------------------------------ */
+
+/* ----- 公共样式 ----- */
+
+.cur-color {
+  color: #161619;
+}
+
+.text-sty {
+  font-size: 40px;
+  line-height: 80px;
+  color: #5D5D5D;
+  text-indent: 2em;
+}
+
+.indent-sty {
+  margin: 0 .4rem;
+}
+
+.all-music {
+  margin: 0 40px 60px 40px;
+}
+
+.none-indent {
+  text-indent: 0;
+}
+
+.user-portrait {
+  width: 130px;
+  height: 130px;
+  & > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid #ededed;
+  }
+}
+
+.user-info {
+  margin-left: 40px;
+  margin-top: 20px;
+  line-height: 40px;
+  color: #5D5D5D;
+  & > span {
+    display: block;
+  }
+  .user-name {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  .rat-date {
+    font-size: 40px;
+  }
+}
+
+.rat-bar {
+  width: 100%;
+  color: #161619;
+  margin-top: 40px;
+}
+
+.film-bg {
+  height: 34px;
+  width: 100%;
+  margin-bottom: 40px;
+  background: url("../img/film-bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.fz40 {
+  font-size: 40px;
+}
+
+.fz50 {
+  font-size: 50px;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+}
+
+.mauto {
+  margin: 0 30px;
+}
+
+.pauto {
+  padding: 0 40px;
+}
+
+/* ------------------------------------------------------------ */
+
+/* ----- 电影原声 ----- */
+
+.ori-title {
+  font-size: 30px;
+  color: #aaaaaa;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ori-music {
+  text-align: center;
+  position: relative;
+  .music-name {
+    font-size: 34px;
+    margin-bottom: 20px;
+  }
+  .music-sing {
+    font-size: 30px;
+  }
+  .film-pos {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  .music-info {
+    position: relative;
+    text-align: left;
+    color: #161619;
+    .music-rotate {
+      width: 100%;
+      height: 350px;
+      position: relative;
+      .music-circle {
+        width: 320px;
+        height: 320px;
+        background: url("../img/music-rotate.png") no-repeat 0 0;
+        background-size: 100% 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -160px;
+        margin-left: -260px;
+      }
+      .music-poster {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -175px;
+        & > img {
+          width: 350px;
+          height: 350px;
+          border-radius: 10px;
+        }
+      }
+      .music-play {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -50px;
+        margin-top: -50px;
+        width: 100px;
+        height: 100px;
+        background: url("../img/music-play.png") no-repeat;
+        background-size: 100px 100px;
+      }
+      .text-bg {
+        width: 62px;
+        height: 350px;
+        background: url("../img/text-bgc.png") no-repeat right center;
+        background-size: 100% 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+  }
+}
+
+.music-bar {
+  display: flex;
+  height: 60px;
+  color: #aaaaaa;
+  text-align: center;
+  border-top: 1px solid rgba(237, 237, 237, 0.3);
+  border-bottom: 1px solid rgba(237, 237, 237, 0.3);
+  margin-bottom: 40px;
+  .icon-share-bar, .icon-thumbs-bar, .icon-collect-bar {
+    flex: 33;
+  }
+  .thumbs-num {
+    font-size: 24px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 80px;
+    padding-top: 6px;
+  }
+}
+
+/* ------------------------------------------------------------ */
+
+/* ----- 点赞 评论 收藏小图标按钮 ----- */
+
+.icon-thumbs-bar, .icon-collect-bar, .icon-write-bar,
+.icon-copy-bar, .icon-share, .icon-share-bar {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+// 点赞
+.icon-thumbs-bar {
+  background-image: url("../img/thumbs-nc.png");
+}
+
+.icon-thumbs-bar.clickThumbs {
+  background-image: url("../img/thumbs-c.png");
+}
+
+// 收藏
+.icon-collect-bar {
+  background-image: url("../img/collect-nc.png");
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: rgba(237, 237, 237, 0.5);
+    position: absolute;
+    right: 0;
+    top: 10px;
+  }
+}
+
+.icon-collect-bar.clickCollect {
+  background-image: url("../img/collect-c.png");
+}
+
+// 评论
+.icon-write-bar {
+  background-image: url("../img/write-rat.png");
+}
+
+// 复制
+.icon-copy-bar {
+  background-image: url("../img/lines-copy.png");
+}
+
+// 分享
+.icon-share-bar {
+  background-image: url("../img/share-nc.png");
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: rgba(237, 237, 237, 0.5);
+    position: absolute;
+    right: 0;
+    top: 10px;
+  }
+
+}
