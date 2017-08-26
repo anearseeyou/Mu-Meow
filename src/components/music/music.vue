@@ -2,23 +2,25 @@
     <!-- 原声音乐 -->
     <div class="music-wrap">
         <div class="ori-music" v-for="(music,index) in homeData.music">
-            <!-- 胶片背景 -->
-            <div class="film-bg"></div>
+            <!-- 间隙 -->
+            <div class="space"></div>
+            <!-- 内容 -->
             <div class="mb40 pauto">
                 <div class="ori-title">- 电影原声 -</div>
-                <div class="music-info">
+                <div class="music-info" @click="goMusicDetails(music.id)">
                     <p class="music-name">{{ music.name }}</p>
                     <p class="music-sing mb40">{{ music.singer }}</p>
                     <div class="music-rotate ">
                         <div class="music-circle"></div>
-                        <router-link to="/homepage/music/mucdetail" class="music-poster">
+                        <a class="music-poster">
                             <img src="../../../static/img/music-poster.png">
                             <div class="music-play"></div>
-                        </router-link>
+                        </a>
                         <div class="text-bg clearfix"></div>
                     </div>
                 </div>
             </div>
+            <!-- 操作 -->
             <div class="music-bar">
                 <span class="icon-share-bar"></span>
                 <span class="icon-collect-bar"
@@ -26,62 +28,38 @@
                       :class="music.myIsCollect ? 'clickCollect' : ''">
                 </span>
                 <span class="icon-thumbs-bar"
-                      @click="musicThubmsUp(music)"
+                      @click="musicLike(music)"
                       :class="music.myIsPraise ? 'clickThumbs' : ''">
                     <i class="thumbs-num">{{ music.thumbs }}</i>
                 </span>
             </div>
         </div>
-
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-    import {thumbsUp} from 'src/api/thumbsUp';
-    import {collection} from 'src/api/collect'
+    import {isLike} from 'src/api/isLike';
+    import {isCollect} from 'src/api/isCollect';
+    import {params} from 'src/api/params'
     export default{
         props: {
-            homeData: {}
+            type: Object,
+            homeData: {},
         },
         methods: {
-            musicThubmsUp(_music){
-                if (_music.myIsPraise == false) {
-                    thumbsUp(
-                        {
-                            praiseType: 3, accountId: 1, targetId: _music.id,
-                            accessToken: 'c89659c38becc80574d638706b018f40'
-                        })
-                        .then(() => {
-                            _music.myIsPraise = true;
-                            _music.thumbs++;
-                        })
-                }
+            // 点赞
+            musicLike(music){
+                isLike(music, params.musicLike);
             },
-            musicCollect(_music){
-                if (_music.myIsCollect == false) {
-                    collection(
-                        {
-                            collectTargetId: _music.id, collectType: 1, accountId: 1,
-                            paramType: 1,
-                            accessToken: "c89659c38becc80574d638706b018f40"
-                        })
-                        .then(() => {
-                            _music.myIsCollect = true;
-                        })
-                }
-                else if (_music.myIsCollect) {
-                    collection(
-                        {
-                            collectTargetId: _music.id, collectType: 1, accountId: 1,
-                            paramType: 2,
-                            accessToken: "c89659c38becc80574d638706b018f40"
-                        })
-                        .then(() => {
-                            _music.myIsCollect = false;
-                        })
-                }
-            }
-        }
+            // 收藏
+            musicCollect(music){
+                isCollect(music, params.musicCollect);
+            },
+            // 跳转详情页
+            goMusicDetails(musicId){
+                this.$router.push({name: 'musicdetail', params: {id: musicId}});
+            },
+        },
     }
 </script>
 

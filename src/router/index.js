@@ -50,13 +50,11 @@ const Comment = (resolve) => {
     })
 }
 
-const Mdetails = (resolve) => {
-    import('components/mucdetail/mucdetail').then((module) => {
+const musicDetail = (resolve) => {
+    import('components/music-detail/music-detail').then((module) => {
         resolve(module)
     })
 }
-
-// const home = r => require.ensure([], () => r(require('@/components/Home')), 'home');
 
 // 路由实例
 Vue.use(Router);
@@ -107,8 +105,9 @@ export default new Router({
             component: Main,
         },
         {
-            path: '/homepage/music/mucdetail',
-            component: Mdetails
+            name: 'musicdetail',
+            path: '/homepage/music/music-detail',
+            component: musicDetail
         }
     ]
 });

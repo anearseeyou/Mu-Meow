@@ -14,7 +14,6 @@
             <span class="deliveryTime">上映时间：{{ homeData.release }}</span>
             <span class="score">豆瓣评分：{{ homeData.score }}分</span>
         </div>
-
         <!-- 内容导航 -->
         <content-nav></content-nav>
         <!-- 占位符 -->
@@ -28,18 +27,22 @@
 
 <script type="text/ecmascript-6">
     import contentNav from 'components/content-nav/content-nav';
-    import {getHomeData, ERR_OK} from 'src/api/home';
+    import {requestData} from 'src/api/request';
+    import {params} from 'src/api/params'
     export default {
         data(){
             return {
                 homeData: Object,
+                homeUrl: 'http://192.168.0.244:8081/web/m2/index.do'
             }
         },
         mounted(){
-            getHomeData(
+            requestData(this.homeUrl,
                 {
-                    accountId: 1, page: 2, pageSize: 1,
-                    accessToken: 'c89659c38becc80574d638706b018f40'
+                    page: params.homepage,
+                    pageSize: params.pageSize,
+                    accountId: params.accountId,
+                    accessToken: params.accessToken
                 })
                 .then((res) => {
                     this.homeData = res.data[0];
