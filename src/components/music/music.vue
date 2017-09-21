@@ -1,6 +1,6 @@
 <template>
     <!-- 原声音乐 -->
-    <div class="music-wrap">
+    <div class="main-body">
         <div class="ori-music" v-for="(music,index) in homeData.music">
             <!-- 间隙 -->
             <div class="space"></div>
@@ -13,7 +13,8 @@
                     <div class="music-rotate ">
                         <div class="music-circle"></div>
                         <a class="music-poster">
-                            <img src="../../../static/img/music-poster.png">
+                            <!-- ../../../static/img/music-poster.png -->
+                            <img :src="music.poster">
                             <div class="music-play"></div>
                         </a>
                         <div class="text-bg clearfix"></div>
@@ -38,13 +39,22 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import {requestData} from 'src/api/request'
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params'
     export default{
+        data() {
+            return {
+                name: "李四",
+                loadMusicUrl: "http://192.168.0.244:8081/web/m2/getMovieMusicByPage.do"
+            }
+        },
         props: {
             type: Object,
             homeData: {},
+        },
+        mounted() {
         },
         methods: {
             // 点赞
@@ -57,9 +67,10 @@
             },
             // 跳转详情页
             goMusicDetails(musicId){
+                document.body.scrollTop = 0;
                 this.$router.push({name: 'musicdetail', params: {id: musicId}});
             },
-        },
+        }
     }
 </script>
 

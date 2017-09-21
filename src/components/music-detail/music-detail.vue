@@ -51,7 +51,7 @@
                     <div v-for="comment in musicDetail.ratings" class="ratings-list">
                         <div class="clearfix">
                             <div class="user-portrait fl">
-                                <img :src="comment.avatar" :alt="comment.username">
+                                <img src="../../../static/img/user-avart.png">
                             </div>
                             <div class="user-info fr">
                                 <div class="user-name clearfix">

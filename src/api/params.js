@@ -6,7 +6,7 @@ export const params =
     {
         //分页查询
         page: 1,
-        homepage: 2,
+        homepage: 1,
         pageSize: 5,
         accountId: 1,
         accessToken: "c89659c38becc80574d638706b018f40",
