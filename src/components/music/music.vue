@@ -3,6 +3,7 @@
     <div class="main-body">
         <div class="ori-music" v-for="(music,index) in homeData.music">
             <!-- 间隙 -->
+            <div class="sss">xioxxo</div>
             <div class="space"></div>
             <!-- 内容 -->
             <div class="mb40 pauto">
