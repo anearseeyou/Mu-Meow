@@ -1,5 +1,5 @@
 {
-  "name": "movie-meow",
+  "name": "mu-meow",
   "version": "1.0.0",
   "description": "app ",
   "author": "Barry <369916324@qq.com>",
@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "better-scroll": "^0.4.0",
-    "mint-ui": "^2.2.9",
     "qs": "^6.5.0",
     "vue": "^2.3.3",
     "vue-router": "^2.6.0"
@@ -30,10 +28,6 @@
     "connect-history-api-fallback": "^1.3.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
-    "postcss": "^5.2.9",
-    "postcss-loader": "^1.2.2",
-    "postcss-plugin-px2rem": "^0.6.0",
-    "postcss-pxtorem": "^3.3.1",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^2.0.0",
@@ -46,6 +40,10 @@
     "opn": "^4.0.2",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "ora": "^1.2.0",
+    "postcss": "^5.2.9",
+    "postcss-loader": "^1.2.2",
+    "postcss-plugin-px2rem": "^0.6.0",
+    "postcss-pxtorem": "^3.3.1",
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
