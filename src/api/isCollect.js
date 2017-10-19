@@ -37,20 +37,18 @@ export function isCollect(target, type) {
 
     // 根据返回的参数 发送不同的请求
     if (target.myIsCollect == false) {
-        return axios.post(url, successData, headers)
-            .then((res) => {
-                if (res.data.code === ERR_OK) {
-                    target.myIsCollect = true;
-                }
-            })
+        return axios.post(url, successData, headers).then((res) => {
+            if (res.data.code === ERR_OK) {
+                target.myIsCollect = true;
+            }
+        })
     }
     else if (target.myIsCollect) {
-        return axios.post(url, cancelData, headers)
-            .then((res) => {
-                if (res.data.code === ERR_OK) {
-                    target.myIsCollect = false;
-                }
-            })
+        return axios.post(url, cancelData, headers).then((res) => {
+            if (res.data.code === ERR_OK) {
+                target.myIsCollect = false;
+            }
+        })
     }
 }
 

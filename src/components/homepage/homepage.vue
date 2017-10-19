@@ -1,8 +1,9 @@
 <template>
     <div class="homepage-wrap" v-cloak>
+        <login></login>
         <!-- 首页头部 -->
         <div class="header">
-            <a class="movie-code" href="javascript:;"></a>
+            <a class="movie-code"></a>
             <span class="movie-title">{{ homeData.name }}</span>
         </div>
         <!-- 电影海报 -->
@@ -26,9 +27,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import contentNav from 'components/content-nav/content-nav';
+    import ContentNav from 'components/content-nav/content-nav';
     import {requestData} from 'src/api/request';
     import {params} from 'src/api/params'
+    import Login from 'components/login/login';
+
     export default {
         data(){
             return {
@@ -50,7 +53,8 @@
                 });
         },
         components: {
-            'content-nav': contentNav
+            ContentNav,
+            Login
         }
     }
 </script>

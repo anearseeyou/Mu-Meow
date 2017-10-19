@@ -3,7 +3,6 @@
     <div class="main-body">
         <div class="ori-music" v-for="(music,index) in homeData.music">
             <!-- 间隙 -->
-            <div class="sss">xioxxo</div>
             <div class="space"></div>
             <!-- 内容 -->
             <div class="mb40 pauto">
@@ -47,15 +46,12 @@
     export default{
         data() {
             return {
-                name: "李四",
                 loadMusicUrl: "http://192.168.0.244:8081/web/m2/getMovieMusicByPage.do"
             }
         },
         props: {
             type: Object,
             homeData: {},
-        },
-        mounted() {
         },
         methods: {
             // 点赞
