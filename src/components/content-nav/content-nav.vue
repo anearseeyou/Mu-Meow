@@ -1,5 +1,5 @@
 <template>
-    <div class="nav indent-sty">
+    <div class="nav">
         <div class="nav-music">
             <span v-show="routerChange == 0" class="music-text">原声音乐</span>
             <span v-show="routerChange == 1" class="music-text">经典台词</span>
@@ -36,13 +36,19 @@
                 routerChange: 0
             }
         },
+        mounted(){
+            if (this.routerChange === 0) {
+                this.$router.push('/homepage/music');
+            }
+        }
     }
 </script>
 
 <style lang="less" rel="stylesheet/less">
     .nav {
-        padding-bottom: 40px;
         display: flex;
+        margin: 0 .4rem;
+        padding-bottom: 40px;
         .nav-music {
             flex: 6;
         }
@@ -64,7 +70,7 @@
 
     .music-text {
         flex: 0.2;
-        font-size: 40px;
+        font-size: 36px;
         position: relative;
         display: inline-block;
         vertical-align: middle;

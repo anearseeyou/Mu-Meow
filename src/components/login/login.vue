@@ -1,5 +1,5 @@
 <template>
-    <div class="sign-wrapper">
+    <div v-show="false" class="sign-wrapper">
         <!-- 登录 -->
         <div class="head-wrap">
             <div class="sign-head">

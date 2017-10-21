@@ -12,10 +12,19 @@
 </template>
 
 <script>
-    import homeNav from './components/home-nav/home-nav.vue';
+    import homeNav from './components/home-nav/home-nav';
+
     export default {
         components: {
-            'home-nav': homeNav,
+            homeNav,
         }
     }
 </script>
+
+<style lang="less" rel="stylesheet/less">
+    
+    .footer-nav {
+        margin-bottom: 98px;
+    }
+
+</style>

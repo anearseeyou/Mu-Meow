@@ -9,7 +9,7 @@
         </div>
         <!-- 歌词海报 -->
         <div class="play-video">
-            <video class="lines-poster" poster="../../../static/img/lines-poster.png"></video>
+            <video class="lines-poster" :poster="musicDetail.poster"></video>
             <i class="play-bar"></i>
             <div class="control clearfix">
                 <span class="fl">01:00</span>
@@ -51,7 +51,7 @@
                     <div v-for="comment in musicDetail.ratings" class="ratings-list">
                         <div class="clearfix">
                             <div class="user-portrait fl">
-                                <img src="../../../static/img/user-avart.png">
+                                <img :src="musicDetail.avatar">
                             </div>
                             <div class="user-info fr">
                                 <div class="user-name clearfix">
@@ -138,7 +138,7 @@
             return {
                 lyricTab: 0,
                 musicDetail: {},
-                musicDetailUrl: "http://192.168.0.244:8081/web/m2/getMovieMusicDetail.do",
+                musicDetailUrl: "http://api.mumiao.distspace.com/web/m2/getMovieMusicDetail.do",
             }
         },
         mounted(){

@@ -5,7 +5,7 @@ import {params} from 'src/api/params'
 export const ERR_OK = 0;
 
 export function isLike(target, type) {
-    const url = 'http://192.168.0.244:8081/web/m2/consumerPraise.do';
+    const url = 'http://api.mumiao.distspace.com/web/m2/consumerPraise.do';
     const data = Object.assign({}, {
         targetId: target.id,
         praiseType: type,

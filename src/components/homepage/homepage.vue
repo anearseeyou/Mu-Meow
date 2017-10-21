@@ -2,13 +2,15 @@
     <div class="homepage-wrap" v-cloak>
         <login></login>
         <!-- 首页头部 -->
-        <div class="header">
-            <a class="movie-code"></a>
-            <span class="movie-title">{{ homeData.name }}</span>
+        <div class="head-wrap">
+            <div class="header">
+                <a class="movie-code"></a>
+                <span class="movie-title">{{ homeData.name }}</span>
+            </div>
         </div>
         <!-- 电影海报 -->
         <div class="banner">
-            <img class="banner-poster" src="static/img/poster.png">
+            <img class="banner-poster" :src="homeData.poster">
         </div>
         <!-- 上映时间 -->
         <div class="banner-info">
@@ -18,7 +20,7 @@
         <!-- 内容导航 -->
         <content-nav></content-nav>
         <!-- 占位符 -->
-        <div class="content-nav">
+        <div class="content">
             <keep-alive>
                 <router-view :homeData="homeData"></router-view>
             </keep-alive>
@@ -28,70 +30,81 @@
 
 <script type="text/ecmascript-6">
     import ContentNav from 'components/content-nav/content-nav';
-    import {requestData} from 'src/api/request';
-    import {params} from 'src/api/params'
     import Login from 'components/login/login';
+    import {requestData} from 'src/api/request';
+    import {ERR_OK} from 'api/request';
+    import {params} from 'src/api/params';
 
     export default {
         data(){
             return {
-                homeData: Object,
-                homeUrl: 'http://192.168.0.244:8081/web/m2/index.do'
+                homeData: {},
             }
         },
         mounted(){
-            requestData(this.homeUrl,
-                {
-                    page: params.homepage,
+            this._loadHomeData();
+        },
+        methods: {
+            // 加载首页数据
+            _loadHomeData(){
+                let url = 'http://api.mumiao.distspace.com/web/m2/index.do';
+                requestData(url, {
+                    page: params.page,
                     pageSize: params.pageSize,
                     accountId: params.accountId,
                     accessToken: params.accessToken
-                })
-                .then((res) => {
+                }).then((res) => {
                     this.homeData = res.data[0];
-                    // console.log(this.homeData);
                 });
+            },
         },
         components: {
             ContentNav,
-            Login
+            Login,
         }
     }
 </script>
 
 <style lang="less" rel="stylesheet/less">
-    .header {
+
+    .head-wrap {
         width: 100%;
         height: 88px;
-        line-height: 88px;
-        text-align: center;
-        background: #161619;
-        box-sizing: border-box;
-        position: relative;
-        .movie-code {
-            width: 40px;
-            height: 40px;
-            font-size: 50px;
-            position: absolute;
-            left: 30px;
-            top: 24px;
-            background: url('img/code.png') no-repeat;
-            background-size: 100% 100%;
-        }
-        .movie-title {
-            font-size: 40px;
-            flex: 1;
-            color: #FFF;
+        .header {
+            width: 100%;
+            height: 88px;
+            line-height: 88px;
+            text-align: center;
+            background: #161619;
+            box-sizing: border-box;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 150;
+            .movie-code {
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                left: 30px;
+                top: 24px;
+                background: url('img/code.png') no-repeat;
+                background-size: 100% 100%;
+            }
+            .movie-title {
+                font-size: 36px;
+                flex: 1;
+                color: #FFF;
+            }
         }
     }
 
     .banner {
-        height: 838px;
         margin: 30px;
         .banner-poster {
             width: 100%;
             height: 100%;
-            border-radius: 10px;
             box-shadow: 1px 1px 10px #E5E5E9;
         }
     }

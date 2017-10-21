@@ -5,7 +5,7 @@ import {params} from 'src/api/params'
 export const ERR_OK = 0;
 
 export function isCollect(target, type) {
-    const url = 'http://192.168.0.244:8081/web/m2/consumerCollect.do';
+    const url = 'http://api.mumiao.distspace.com/web/m2/consumerCollect.do';
     // 成功收藏
     const successData = Object.assign({}, {
         collectTargetId: target.id,
