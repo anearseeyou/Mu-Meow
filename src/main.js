@@ -7,6 +7,7 @@ import fastclick from 'fastclick';
 import './javascript/flexible';
 import './common/less/index.less';
 
+
 // 移动端300延迟
 fastclick.attach(document.body);
 

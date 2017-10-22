@@ -10,7 +10,7 @@
         </div>
         <!-- 电影海报 -->
         <div class="banner">
-            <img class="banner-poster" :src="homeData.poster">
+            <img :src="homeData.poster" class="banner-poster">
         </div>
         <!-- 上映时间 -->
         <div class="banner-info">
@@ -54,9 +54,11 @@
                     accountId: params.accountId,
                     accessToken: params.accessToken
                 }).then((res) => {
-                    this.homeData = res.data[0];
+                    if (res.code === 0) {
+                        this.homeData = res.data[0];
+                    }
                 });
-            },
+            }
         },
         components: {
             ContentNav,
