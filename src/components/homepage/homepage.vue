@@ -9,8 +9,14 @@
             </div>
         </div>
         <!-- 电影海报 -->
-        <div class="banner">
-            <img :src="homeData.poster" class="banner-poster">
+        <div class="slider" ref="slider" v-if="arrayData.length">
+            <ul class="slider-group" ref="sliderGroup">
+                <li @touchstart="beginTouch"
+                    @touchmove.prevent="moveTouch($event,index)"
+                    @touchend="endTouch(index)" v-for="(item,index) in arrayData">
+                    <img :src="item.poster" class="poster">
+                </li>
+            </ul>
         </div>
         <!-- 上映时间 -->
         <div class="banner-info">
@@ -34,31 +40,127 @@
     import {requestData} from 'src/api/request';
     import {ERR_OK} from 'api/request';
     import {params} from 'src/api/params';
+    import {addClass} from 'common/js/dom';
 
     export default {
         data(){
             return {
                 homeData: {},
+                arrayData: [],
+                pageIndex: 0
             }
         },
         mounted(){
+            this.touch = {};
             this._loadHomeData();
+
+            setTimeout(() => {
+                this._setSliderWidth();
+            }, 200)
+
+            // 监听视口发生改变
+            window.addEventListener('resize', () => {
+                this._setSliderWidth();
+            });
         },
         methods: {
+            // 开始滑动
+            beginTouch(e){
+                // 获取初始值
+                this.touch.startX = e.touches[0].clientX;
+            },
+            // 移动
+            moveTouch(e, index){
+                let sliderWidth = this.$refs.slider.clientWidth;
+
+                // 获取滑动距离
+                this.touch.moveX = e.touches[0].clientX;
+                // 时时监听滑动的距离
+                this.touch.distanceX = this.touch.startX - this.touch.moveX;
+
+                this._removeTransition();
+                this._changeTranslateX(-index * sliderWidth - this.touch.distanceX);
+            },
+            // 结束滑动
+            endTouch(index){
+                let sliderWidth = this.$refs.slider.clientWidth;
+                if (Math.abs(this.touch.distanceX) >= 1 / 4 * sliderWidth && this.touch.moveX != 0) {
+                    if (this.touch.distanceX > 0) {
+                        index++
+                    }
+                    else {
+                        index--
+                        if (index <= 0) {
+                            index = 0;
+                        }
+                    }
+                }
+                this._addTransition();
+                this._changeTranslateX(-index * sliderWidth);
+
+                this.touch.startX = 0;
+                this.touch.moveX = 0;
+                this.touch.distanceX = 0;
+            },
+
             // 加载首页数据
             _loadHomeData(){
                 let url = 'http://api.mumiao.distspace.com/web/m2/index.do';
-                requestData(url, {
-                    page: params.page,
-                    pageSize: params.pageSize,
-                    accountId: params.accountId,
-                    accessToken: params.accessToken
-                }).then((res) => {
-                    if (res.code === 0) {
-                        this.homeData = res.data[0];
-                    }
-                });
-            }
+                for (let i = 1; i < 5; i++) {
+                    requestData(url, {
+                        page: i,
+                        pageSize: params.pageSize,
+                        accountId: params.accountId,
+                        accessToken: params.accessToken
+                    }).then((res) => {
+                            if (res.code === 0) {
+                                this.arrayData.push(res.data[0]);
+                                this.arrayData.sort((a, b) => {
+                                    return b.id - a.id;
+                                });
+                                this.arrayData.join();
+                                // console.log(this.arrayData);
+                                this.homeData = this.arrayData[0];
+                            }
+                        }
+                    )
+                }
+            },
+            // 动态计算宽度
+            _setSliderWidth(){
+                // 获取轮播项
+                this.children = this.$refs.sliderGroup.children;
+
+                let containerWidth = 0;
+                let sliderWidth = this.$refs.slider.clientWidth;
+
+                for (let i = 0, len = this.children.length; i < len; i++) {
+                    let child = this.children[i];
+                    addClass(child, 'slider-item');
+
+                    child.style.width = sliderWidth + 'px';
+                    containerWidth += sliderWidth;
+                }
+                this.$refs.sliderGroup.style.width = containerWidth + 'px';
+            },
+            // 添加过度
+            _addTransition() {
+                const bannerSlider = this.$refs.slider;
+                bannerSlider.style.transition = 'all 0.5s';
+                bannerSlider.style.webkitTransition = 'all 0.5s';
+            },
+            // 移除过度
+            _removeTransition() {
+                const bannerSlider = this.$refs.slider;
+                bannerSlider.style.transition = 'none';
+                bannerSlider.style.webkitTransition = 'none';
+            },
+            // 改变位置
+            _changeTranslateX(x) {
+                const bannerSlider = this.$refs.slider;
+                bannerSlider.style.transform = 'translateX(' + x + 'px)';
+                bannerSlider.style.webkitTransform = 'translateX(' + x + 'px)';
+            },
         },
         components: {
             ContentNav,
@@ -102,12 +204,24 @@
         }
     }
 
-    .banner {
-        margin: 30px;
-        .banner-poster {
+    .slider {
+        margin: 30px 0;
+        min-height: 1px;
+        .slider-group {
             width: 100%;
-            height: 100%;
-            box-shadow: 1px 1px 10px #E5E5E9;
+            overflow: hidden;
+            white-space: nowrap;
+            .slider-item {
+                float: left;
+                overflow: hidden;
+                text-align: center;
+                box-sizing: border-box;
+            }
+            .poster {
+                width: 690px;
+                height: 100%;
+                box-shadow: 1px 1px 10px #E5E5E9;
+            }
         }
     }
 
