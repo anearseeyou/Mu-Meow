@@ -5,11 +5,11 @@
             <!-- 间隙 -->
             <div class="space"></div>
             <!-- 内容 -->
-            <div class="mb40 pauto">
+            <div class="music-origin">
                 <div class="music-title">- 电影原声 -</div>
                 <div class="music-info" @click="musicDetail(music)">
                     <p class="music-name">{{ music.name }}</p>
-                    <p class="music-sing mb40">{{ music.singer }}</p>
+                    <p class="music-sing">{{ music.singer }}</p>
                     <div class="music-rotate ">
                         <div class="music-circle"></div>
                         <a class="music-poster">
@@ -22,7 +22,7 @@
             </div>
             <!-- 操作 -->
             <div class="music-bar">
-                <span class="icon-share-bar"></span>
+                <span class="icon-share-bar" @click="share"></span>
                 <span class="icon-collect-bar"
                       @click="musicCollect(music)"
                       :class="music.myIsCollect ? 'clickCollect' : ''">
@@ -34,11 +34,14 @@
                 </span>
             </div>
         </div>
+        <!-- 暂无数据 -->
+        <none-data v-if="homeData.music" v-show="!homeData.music.length"></none-data>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-    import {requestData} from 'src/api/request';
+    import NoneData from 'base/none-data/none-data';
+    import {request} from 'src/api/request';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params';
@@ -53,11 +56,20 @@
         methods: {
             // 点赞
             musicLike(music){
-                isLike(music, params.musicLike);
+                this._callFn(isLike, music, params.musicLike);
             },
             // 收藏
             musicCollect(music){
-                isCollect(music, params.musicCollect);
+                this._callFn(isCollect, music, params.musicCollect);
+            },
+            // 分享
+            share(){
+                if (localStorage.USERINFO) {
+                    alert("分享成功");
+                }
+                else {
+                    this.$router.push({name: 'login'});
+                }
             },
             // 跳转详情页
             musicDetail(music){
@@ -65,7 +77,19 @@
                 document.body.scrollTop = 0;
                 this.$router.push({name: 'musicdetail', params: {id: musicId}});
             },
+            // 回调函数
+            _callFn(callName, target, type){
+                if (localStorage.USERINFO) {
+                    callName(target, type);
+                }
+                else {
+                    this.$router.push({name: 'login'});
+                }
+            }
         },
+        components: {
+            NoneData
+        }
     }
 </script>
 
@@ -74,6 +98,10 @@
     .music {
         text-align: center;
         position: relative;
+        .music-origin {
+            padding: 0 40px;
+            margin-bottom: 40px;
+        }
         .music-title {
             font-size: 24px;
             color: #aaaaaa;
@@ -86,6 +114,7 @@
         }
         .music-sing {
             font-size: 30px;
+            margin-bottom: 40px;
         }
         .music-info {
             position: relative;

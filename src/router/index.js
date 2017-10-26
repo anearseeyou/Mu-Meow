@@ -50,8 +50,14 @@ const Comment = (resolve) => {
     })
 }
 
-const musicDetail = (resolve) => {
+const MusicDetail = (resolve) => {
     import('components/music-detail/music-detail').then((module) => {
+        resolve(module)
+    })
+}
+
+const Login = (resolve) => {
+    import('components/login/login').then((module) => {
         resolve(module)
     })
 }
@@ -107,7 +113,12 @@ export default new Router({
         {
             name: 'musicdetail',
             path: '/homepage/music/music-detail',
-            component: musicDetail
+            component: MusicDetail
+        },
+        {
+            name: 'login',
+            path: '/mumeow/login',
+            component: Login
         }
     ]
 });

@@ -2,14 +2,27 @@
  * request params
  */
 
+// 把存入local的用户信息取出来
+if (localStorage.USERINFO) {
+    var userInfo = JSON.parse(localStorage.getItem('USERINFO'));
+    var accountId = userInfo.accountId;
+    var accessToken = userInfo.accessToken;
+    var userPhone = userInfo.phone;
+    var userAvatar = userInfo.accountAvatar;
+}
+
 export const params =
     {
         //分页查询
         page: 1,
-        homepage: 1,
-        pageSize: 5,
-        accountId: 1,
-        accessToken: "c89659c38becc80574d638706b018f40",
+        pageSize: 1,
+        morePage: 10,
+        accountId: accountId || null,
+        accessToken: accessToken || null,
+
+        // 用户信息
+        phone: userPhone || null,
+        avatar: userAvatar || null,
 
         // 收藏参数
         musicCollect: 1,

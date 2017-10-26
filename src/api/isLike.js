@@ -3,6 +3,7 @@ import qs from 'qs'
 import {params} from 'src/api/params'
 
 export const ERR_OK = 0;
+const LOGIN_CODE = 4001;
 
 export function isLike(target, type) {
     const url = 'http://api.mumiao.distspace.com/web/m2/consumerPraise.do';
@@ -23,12 +24,14 @@ export function isLike(target, type) {
         ]
     };
     if (target.myIsPraise == false) {
-        return axios.post(url, data, headers)
-            .then((res) => {
-                if (res.data.code === ERR_OK) {
-                    target.myIsPraise = true;
-                    target.thumbs++;
-                }
-            })
+        return axios.post(url, data, headers).then((res) => {
+            if (res.data.code === ERR_OK) {
+                target.myIsPraise = true;
+                target.thumbs++;
+            }
+            else if (res.data.code === LOGIN_CODE) {
+                console.log(res.data.message);
+            }
+        })
     }
 }

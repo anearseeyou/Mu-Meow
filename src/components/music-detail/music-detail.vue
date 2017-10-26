@@ -129,7 +129,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import {requestData} from 'src/api/request'
+    import {request} from 'src/api/request'
     import {isLike} from 'src/api/isLike'
     import {isCollect} from 'src/api/isCollect'
     import {params} from 'src/api/params'
@@ -148,7 +148,7 @@
             // 获取数据
             musicDetailData(){
                 if (this.$route.params.id) {
-                    requestData(this.musicDetailUrl,
+                    request(this.musicDetailUrl,
                         {
                             musicId: this.$route.params.id,
                             accountId: params.accountId,

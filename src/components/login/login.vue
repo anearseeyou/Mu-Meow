@@ -1,60 +1,65 @@
 <template>
-    <div v-show="false" class="sign-wrapper">
-        <!-- 登录 -->
-        <div class="head-wrap">
-            <div class="sign-head">
-                <div class="back-btn"></div>
-                <div class="play-title">幕喵</div>
+    <transition name="login">
+        <div class="sign-wrapper">
+            <!-- 登录 -->
+            <div class="head-wrap">
+                <div class="sign-head">
+                    <div class="back-wrap" @click="back"><a class="back-btn"></a></div>
+                    <div class="play-title">登录幕喵</div>
+                </div>
+            </div>
+            <!-- 输入框 -->
+            <div class="sign-in">
+                <div class="movie-log"></div>
+                <div class="user-name clearfix">
+                    <div class="user-bar fl"></div>
+                    <input class="user-input fl" type="text"
+                           placeholder="请输入手机号"
+                           @input="inputText"
+                           v-model="phomeNum">
+                </div>
+                <div class="user-name password">
+                    <div class="user-bar pwd-bar fl"></div>
+                    <input v-model="inputCode" class="user-input fl" type="password" placeholder="请输入验证码">
+                    <div v-show="flag" class="obtain-code" @click="getCode">获取验证码</div>
+                    <div v-show="!flag" class="obtain-code send-code">{{ countext }}</div>
+                </div>
+                <div class="user-name signing-in">
+                    <input @click="quickLogin" class="user-input sign-btn fl" type="button" value="快速登录">
+                </div>
+            </div>
+            <!-- 其他 -->
+            <div class="other-login">其他登录方式</div>
+            <!-- 第三方登录 -->
+            <div class="relation">
+                <a class="relation-sign">
+                    <span class="relation-wx"></span>
+                </a>
+                <a class="relation-sign ">
+                    <span class="relation-qq"></span>
+                </a>
+                <a class="relation-sign ">
+                    <span class="relation-wb"></span>
+                </a>
             </div>
         </div>
-        <!-- 输入框 -->
-        <div class="sign-in">
-            <div class="movie-log"></div>
-            <div class="user-name clearfix">
-                <div class="user-bar fl"></div>
-                <input class="user-input fl" type="text"
-                       placeholder="请输入手机号"
-                       @input="inputText"
-                       v-model="phomeNum">
-            </div>
-            <div class="user-name password">
-                <div class="user-bar pwd-bar fl"></div>
-                <input v-model="inputCode" class="user-input fl" type="password" placeholder="请输入验证码">
-                <div v-show="flag" class="obtain-code" @click="getCode">获取验证码</div>
-                <div v-show="!flag" class="obtain-code send-code">{{ countext }}</div>
-            </div>
-            <div class="user-name signing-in">
-                <input @click="quickLogin" class="user-input sign-btn fl" type="button" value="快速登录">
-            </div>
-        </div>
-        <!-- 其他 -->
-        <div class="other-login">其他登录方式</div>
-        <!-- 第三方登录 -->
-        <div class="relation">
-            <a class="relation-sign">
-                <span class="relation-wx"></span>
-            </a>
-            <a class="relation-sign ">
-                <span class="relation-qq"></span>
-            </a>
-            <a class="relation-sign ">
-                <span class="relation-wb"></span>
-            </a>
-        </div>
-    </div>
+    </transition>
 </template>
 
 <script type="text/ecmascript-6">
-    import {requestData} from 'api/request';
+    import {request} from 'api/request';
     import {ERR_OK} from 'api/request';
+
+    const CODE_URL = 'http://api.mumiao.distspace.com/web/m2/getValidateCode.do';
+    const LOGIN_URL = 'http://api.mumiao.distspace.com/web/m2/quickLogin.do';
 
     export default {
         data(){
             return {
                 flag: true,
-                countext: null,
-                phomeNum: null,
-                inputCode: null,
+                countext: "",
+                phomeNum: "",
+                inputCode: "",
             }
         },
         methods: {
@@ -68,9 +73,7 @@
             },
             // 获取验证码
             getCode(){
-                console.log(this.phomeNum);
-                let url = 'http://api.mumiao.distspace.com/web/m2/getValidateCode.do';
-                requestData(url, {
+                request(CODE_URL, {
                     mobile: this.phomeNum
                 }).then((res) => {
                     if (res.code === ERR_OK) {
@@ -81,16 +84,20 @@
             },
             // 立即登录
             quickLogin(){
-                let url = 'http://api.mumiao.distspace.com/web/m2/quickLogin.do';
-                requestData(url, {
+                request(LOGIN_URL, {
                     mobile: this.phomeNum,
                     code: this.inputCode
                 }).then((res) => {
                     if (res.code === ERR_OK) {
-                        let loginInfo = res.data;
+                        let loginInfo = JSON.stringify(res.data);
                         localStorage.setItem('USERINFO', loginInfo);
+                        this.back();
                     }
                 })
+            },
+            // 返回
+            back(){
+                this.$router.back();
             },
             // 倒计时
             _countDown(){
@@ -108,7 +115,8 @@
                     }, i * 1000);
                 }
             }
-        }
+        },
+
     }
 </script>
 
@@ -120,7 +128,7 @@
         top: 0;
         left: 0;
         bottom: 0;
-        z-index: 150;
+        z-index: 151;
         width: 100%;
         height: 100%;
         background: #FFFFFF;
@@ -139,13 +147,16 @@
                 z-index: 22;
                 color: #ffffff;
                 font-size: 36px;
+                .back-wrap {
+                    width: 100px;
+                    height: 100%;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
                 .back-btn {
                     width: 18px;
                     height: 30px;
-                    font-size: 50px;
-                    position: absolute;
-                    left: 30px;
-                    top: 24px;
                     background: url('img/back.png') no-repeat;
                     background-size: 100% 100%;
                 }
@@ -212,15 +223,15 @@
                     display: inline-block;
                     height: 40px;
                     line-height: 40px;
-                    border: 1px solid #aaaaaa;
-                    background: rgba(233, 233, 233, 0.5);
+                    // border: 1px solid #aaaaaa;
+                    // background: rgba(233, 233, 233, 0.5);
                     color: #333;
                     padding: 5px;
                     margin-top: 9px;
                     border-radius: 5px;
                 }
                 .send-code {
-                    background: #bdbdbd;
+                    background: #e0e0e0;
                 }
             }
             .signing-in {
@@ -264,4 +275,11 @@
         }
     }
 
+    .login-enter-active, .login-leave-active {
+        transition: all 0.5s;
+    }
+
+    .login-enter, .login-leave-to {
+        transform: translate3d(100%, 0, 0);
+    }
 </style>

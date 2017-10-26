@@ -3,7 +3,7 @@ import qs from 'qs'
 
 export const ERR_OK = 0;
 
-export function requestData(url, params) {
+export function request(url, params) {
 
     const data = Object.assign({}, params);
     const headers = {
@@ -24,5 +24,5 @@ export function requestData(url, params) {
         else {
             alert("请求失败");
         }
-    }).catch((err) => console.log(err))
+    }).catch((err) => alert(err));
 }

@@ -1,6 +1,5 @@
 <template>
     <div class="homepage-wrap" v-cloak>
-        <login></login>
         <!-- 首页头部 -->
         <div class="head-wrap">
             <div class="header">
@@ -36,18 +35,19 @@
 
 <script type="text/ecmascript-6">
     import ContentNav from 'components/content-nav/content-nav';
-    import Login from 'components/login/login';
-    import {requestData} from 'src/api/request';
+    import {request} from 'src/api/request';
     import {ERR_OK} from 'api/request';
     import {params} from 'src/api/params';
     import {addClass} from 'common/js/dom';
 
+    const URL = 'http://api.mumiao.distspace.com/web/m2/index.do';
+
     export default {
         data(){
             return {
+                addPage: 4,
                 homeData: {},
                 arrayData: [],
-                pageIndex: 0
             }
         },
         mounted(){
@@ -56,7 +56,7 @@
 
             setTimeout(() => {
                 this._setSliderWidth();
-            }, 200)
+            }, 200);
 
             // 监听视口发生改变
             window.addEventListener('resize', () => {
@@ -84,15 +84,32 @@
             // 结束滑动
             endTouch(index){
                 let sliderWidth = this.$refs.slider.clientWidth;
-                if (Math.abs(this.touch.distanceX) >= 1 / 4 * sliderWidth && this.touch.moveX != 0) {
-                    if (this.touch.distanceX > 0) {
+
+                if (Math.abs(this.touch.distanceX) >= 1 / 3 * sliderWidth && this.touch.moveX != 0) { // 长滑
+                    this._changeTranslateX(0);
+                }
+                else if (Math.abs(this.touch.distanceX) > 10 && this.touch.moveX != 0) { // 快速滑动
+                    if (this.touch.distanceX > 10) {
                         index++
+                        request(URL, {
+                            page: this.addPage++,
+                            pageSize: params.pageSize,
+                            accountId: params.accountId,
+                            accessToken: params.accessToken
+                        }).then((res) => {
+                            if (res.code === ERR_OK) {
+                                this.arrayData.push(res.data[0]);
+                                this.homeData = this.arrayData[index];
+                                this._setSliderWidth();
+                            }
+                        })
                     }
                     else {
                         index--
                         if (index <= 0) {
                             index = 0;
                         }
+                        this.homeData = this.arrayData[index];
                     }
                 }
                 this._addTransition();
@@ -102,28 +119,23 @@
                 this.touch.moveX = 0;
                 this.touch.distanceX = 0;
             },
-
             // 加载首页数据
             _loadHomeData(){
-                let url = 'http://api.mumiao.distspace.com/web/m2/index.do';
-                for (let i = 1; i < 5; i++) {
-                    requestData(url, {
+                for (let i = 1; i < 3; i++) {
+                    request(URL, {
                         page: i,
                         pageSize: params.pageSize,
                         accountId: params.accountId,
                         accessToken: params.accessToken
                     }).then((res) => {
-                            if (res.code === 0) {
-                                this.arrayData.push(res.data[0]);
-                                this.arrayData.sort((a, b) => {
-                                    return b.id - a.id;
-                                });
-                                this.arrayData.join();
-                                // console.log(this.arrayData);
-                                this.homeData = this.arrayData[0];
-                            }
+                        if (res.code === ERR_OK) {
+                            this.arrayData.push(res.data[0]);
+                            this.arrayData.sort((a, b) => {
+                                return a.id - b.id;
+                            });
+                            this.homeData = this.arrayData[0];
                         }
-                    )
+                    })
                 }
             },
             // 动态计算宽度
@@ -164,13 +176,11 @@
         },
         components: {
             ContentNav,
-            Login,
         }
     }
 </script>
 
 <style lang="less" rel="stylesheet/less">
-
     .head-wrap {
         width: 100%;
         height: 88px;

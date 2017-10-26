@@ -3,6 +3,7 @@ import qs from 'qs'
 import {params} from 'src/api/params'
 
 export const ERR_OK = 0;
+const LOGIN_CODE = 4001;
 
 export function isCollect(target, type) {
     const url = 'http://api.mumiao.distspace.com/web/m2/consumerCollect.do';
@@ -34,12 +35,14 @@ export function isCollect(target, type) {
             }
         ]
     };
-
     // 根据返回的参数 发送不同的请求
     if (target.myIsCollect == false) {
         return axios.post(url, successData, headers).then((res) => {
             if (res.data.code === ERR_OK) {
                 target.myIsCollect = true;
+            }
+            else if (res.data.code === LOGIN_CODE) {
+                console.log(res.data.message);
             }
         })
     }
@@ -47,6 +50,9 @@ export function isCollect(target, type) {
         return axios.post(url, cancelData, headers).then((res) => {
             if (res.data.code === ERR_OK) {
                 target.myIsCollect = false;
+            }
+            else if (res.data.code === LOGIN_CODE) {
+                console.log(res.data.message);
             }
         })
     }
