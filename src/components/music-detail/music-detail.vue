@@ -129,7 +129,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import {request} from 'src/api/request'
+    import {requestData} from 'src/api/request'
     import {isLike} from 'src/api/isLike'
     import {isCollect} from 'src/api/isCollect'
     import {params} from 'src/api/params'
@@ -141,14 +141,14 @@
                 musicDetailUrl: "http://api.mumiao.distspace.com/web/m2/getMovieMusicDetail.do",
             }
         },
-        mounted(){
+        created(){
             this.musicDetailData();
         },
         methods: {
             // 获取数据
             musicDetailData(){
                 if (this.$route.params.id) {
-                    request(this.musicDetailUrl,
+                    requestData(this.musicDetailUrl,
                         {
                             musicId: this.$route.params.id,
                             accountId: params.accountId,

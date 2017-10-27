@@ -47,7 +47,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import {request} from 'api/request';
+    import {requestData} from 'api/request';
     import {ERR_OK} from 'api/request';
 
     const CODE_URL = 'http://api.mumiao.distspace.com/web/m2/getValidateCode.do';
@@ -73,7 +73,7 @@
             },
             // 获取验证码
             getCode(){
-                request(CODE_URL, {
+                requestData(CODE_URL, {
                     mobile: this.phomeNum
                 }).then((res) => {
                     if (res.code === ERR_OK) {
@@ -84,7 +84,7 @@
             },
             // 立即登录
             quickLogin(){
-                request(LOGIN_URL, {
+                requestData(LOGIN_URL, {
                     mobile: this.phomeNum,
                     code: this.inputCode
                 }).then((res) => {
@@ -116,7 +116,11 @@
                 }
             }
         },
-
+        beforeRouteLeave (to, from){
+            if (from.name == 'login') {
+                window.location.reload();
+            }
+        }
     }
 </script>
 
@@ -198,6 +202,7 @@
                     width: 70%;
                     height: 100%;
                     outline: none;
+                    border: none;
                     background: transparent;
                     box-sizing: border-box;
                     border-top-right-radius: 1px;
@@ -223,15 +228,13 @@
                     display: inline-block;
                     height: 40px;
                     line-height: 40px;
-                    // border: 1px solid #aaaaaa;
-                    // background: rgba(233, 233, 233, 0.5);
                     color: #333;
                     padding: 5px;
                     margin-top: 9px;
                     border-radius: 5px;
                 }
                 .send-code {
-                    background: #e0e0e0;
+                    background: rgba(240, 240, 240, 0.8);
                 }
             }
             .signing-in {
@@ -280,6 +283,6 @@
     }
 
     .login-enter, .login-leave-to {
-        transform: translate3d(100%, 0, 0);
+        transform: translate3d(0, 100%, 0);
     }
 </style>

@@ -36,12 +36,15 @@
         </div>
         <!-- 暂无数据 -->
         <none-data v-if="homeData.music" v-show="!homeData.music.length"></none-data>
+        <!-- 加载更多 -->
+        <more-data :movieId="homeData.id"></more-data>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import NoneData from 'base/none-data/none-data';
-    import {request} from 'src/api/request';
+    import MoreData from 'base/more-data/more-data';
+    import {requestData} from 'src/api/request';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params';
@@ -88,8 +91,9 @@
             }
         },
         components: {
-            NoneData
-        }
+            NoneData,
+            MoreData
+        },
     }
 </script>
 

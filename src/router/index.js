@@ -81,6 +81,7 @@ export default new Router({
             component: Homepage,
             children: [
                 {
+                    name: 'music',
                     path: '/homepage/music',
                     component: Music,
                 },

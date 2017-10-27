@@ -35,7 +35,7 @@
 
 <script type="text/ecmascript-6">
     import ContentNav from 'components/content-nav/content-nav';
-    import {request} from 'src/api/request';
+    import {requestData} from 'src/api/request';
     import {ERR_OK} from 'api/request';
     import {params} from 'src/api/params';
     import {addClass} from 'common/js/dom';
@@ -83,6 +83,7 @@
             },
             // 结束滑动
             endTouch(index){
+                this.touch.startY = 0;
                 let sliderWidth = this.$refs.slider.clientWidth;
 
                 if (Math.abs(this.touch.distanceX) >= 1 / 3 * sliderWidth && this.touch.moveX != 0) { // 长滑
@@ -91,7 +92,7 @@
                 else if (Math.abs(this.touch.distanceX) > 10 && this.touch.moveX != 0) { // 快速滑动
                     if (this.touch.distanceX > 10) {
                         index++
-                        request(URL, {
+                        requestData(URL, {
                             page: this.addPage++,
                             pageSize: params.pageSize,
                             accountId: params.accountId,
@@ -122,7 +123,7 @@
             // 加载首页数据
             _loadHomeData(){
                 for (let i = 1; i < 3; i++) {
-                    request(URL, {
+                    requestData(URL, {
                         page: i,
                         pageSize: params.pageSize,
                         accountId: params.accountId,
@@ -134,6 +135,7 @@
                                 return a.id - b.id;
                             });
                             this.homeData = this.arrayData[0];
+                            console.log(this.homeData);
                         }
                     })
                 }
@@ -176,7 +178,7 @@
         },
         components: {
             ContentNav,
-        }
+        },
     }
 </script>
 

@@ -9,7 +9,7 @@
 <script type="text/ecmascript-6">
     import BScroll from 'better-scroll';
     import {addClass} from 'common/js/dom';
-    import {request} from 'src/api/request';
+    import {requestData} from 'src/api/request';
     import {params} from 'src/api/params';
 
     export default{
@@ -18,7 +18,7 @@
                 page: 3
             }
         },
-        mounted(){
+        created(){
             // 加载时 初始化组件
             setTimeout(() => {
                 this._setSliderWidth();
@@ -76,7 +76,7 @@
                     // bette-scroll中获取当前元素索引的方法
                     let pageIndex = this.slider.getCurrentPage().pageX;
                     let url = 'http://api.mumiao.distspace.com/web/m2/index.do';
-                    request(url, {
+                    requestData(url, {
                         page: this.page++,
                         pageSize: params.pageSize,
                         accountId: params.accountId,

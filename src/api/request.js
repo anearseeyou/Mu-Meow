@@ -3,7 +3,7 @@ import qs from 'qs'
 
 export const ERR_OK = 0;
 
-export function request(url, params) {
+export function requestData(url, params) {
 
     const data = Object.assign({}, params);
     const headers = {
