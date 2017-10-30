@@ -37,19 +37,27 @@
         <!-- 暂无数据 -->
         <none-data v-if="homeData.music" v-show="!homeData.music.length"></none-data>
         <!-- 加载更多 -->
-        <more-data :movieId="homeData.id"></more-data>
+        <more-data @loadMore="loadMore" :moreData="moreData"></more-data>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import NoneData from 'base/none-data/none-data';
     import MoreData from 'base/more-data/more-data';
-    import {requestData} from 'src/api/request';
+    import {requestData, ERR_OK} from 'src/api/request';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params';
 
+    const URL = 'http://192.168.0.244:8081/web/m2/getMovieMusicByPage.do';
+
     export default{
+        data(){
+            return {
+                page: 2,
+                moreData: {}
+            }
+        },
         props: {
             homeData: {
                 type: Object,
@@ -88,6 +96,22 @@
                 else {
                     this.$router.push({name: 'login'});
                 }
+            },
+            // 加载更多
+            loadMore(){
+                requestData(URL, {
+                    page: this.page,
+                    accountId: params.accountId,
+                    pageSize: params.morePageSize,
+                    movieId: this.homeData.id,
+                }).then((res) => {
+                    if (res.code === ERR_OK) {
+                        this.moreData = res.data;
+                        for (let i = 0, len = this.moreData.length; i < len; i++) {
+                            this.homeData.music.push(this.moreData[i]);
+                        }
+                    }
+                })
             }
         },
         components: {
@@ -126,40 +150,39 @@
             color: #161619;
             .music-rotate {
                 width: 100%;
-                height: 350px;
+                height: 300px;
                 position: relative;
                 .music-circle {
-                    width: 320px;
-                    height: 320px;
+                    width: 280px;
+                    height: 280px;
                     background: url("img/music-rotate.png") no-repeat 0 0;
                     background-size: 100% 100%;
                     position: absolute;
                     left: 50%;
                     top: 50%;
-                    margin-top: -160px;
-                    margin-left: -260px;
+                    margin-top: -140px;
+                    margin-left: -220px;
                 }
                 .music-poster {
                     position: absolute;
                     top: 0;
                     left: 50%;
-                    margin-left: -175px;
+                    margin-left: -150px;
                     & > img {
-                        width: 350px;
-                        height: 350px;
-                        border-radius: 10px;
+                        width: 300px;
+                        height: 300px;
                     }
                 }
                 .music-play {
                     position: absolute;
                     left: 50%;
                     top: 50%;
-                    margin-left: -50px;
-                    margin-top: -50px;
-                    width: 100px;
-                    height: 100px;
+                    margin-left: -40px;
+                    margin-top: -40px;
+                    width: 80px;
+                    height: 80px;
                     background: url("img/music-play.png") no-repeat;
-                    background-size: 100px 100px;
+                    background-size: 80px 80px;
                 }
                 .text-bg {
                     width: 62px;

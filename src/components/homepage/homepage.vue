@@ -135,7 +135,6 @@
                                 return a.id - b.id;
                             });
                             this.homeData = this.arrayData[0];
-                            console.log(this.homeData);
                         }
                     })
                 }
