@@ -1,18 +1,14 @@
 <template>
     <div class="more-data">
-        <p @click="loadMore" class="load-more">点我！加载更多</p>
-        <!--<p v-show="!moreData.length" class="load-more">艾玛！用力过猛</p>-->
+        <p v-show="moreData != 0" @click="loadMore" class="load-more">点我！加载更多</p>
+        <p v-show="moreData == 0" class="load-more">艾玛！数据罢工了</p>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-
     export default{
         props: {
-            moreData: {
-                type: Object,
-                default: null
-            }
+            moreData: {},
         },
         methods: {
             loadMore(){
@@ -28,6 +24,7 @@
         font-size: 26px;
         text-align: center;
         overflow: hidden;
+        // background: rgba(237, 237, 237, 0.3);
         .load-more {
             width: 240px;
             height: 50px;

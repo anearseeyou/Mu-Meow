@@ -1,31 +1,35 @@
 <template>
-    <div class="nav">
-        <div class="nav-music">
-            <span v-show="routerChange == 0" class="music-text">原声音乐</span>
-            <span v-show="routerChange == 1" class="music-text">经典台词</span>
-            <span v-show="routerChange == 2" class="music-text">电影故事</span>
-            <span v-show="routerChange == 3" class="music-text">影片短评</span>
+    <div class="nav-wrapper">
+        <div class="nav">
+            <div class="nav-music">
+                <span v-show="routerChange == 0" class="music-text">原声音乐</span>
+                <span v-show="routerChange == 1" class="music-text">经典台词</span>
+                <span v-show="routerChange == 2" class="music-text">电影故事</span>
+                <span v-show="routerChange == 3" class="music-text">影片短评</span>
+            </div>
+            <div class="nav-item" @click="routerChange = 0">
+                <router-link to="/homepage/music">
+                    <span class="icon-music-bar" :class="{current:routerChange == 0}"></span>
+                </router-link>
+            </div>
+            <div class="nav-item" @click="routerChange = 1">
+                <router-link to="/homepage/lines">
+                    <span class="icon-line-bar" :class="{current:routerChange == 1}"></span>
+                </router-link>
+            </div>
+            <div class="nav-item" @click="routerChange = 2">
+                <router-link to="/homepage/story">
+                    <span class="icon-story-bar" :class="{current:routerChange == 2}"></span>
+                </router-link>
+            </div>
+            <div class="nav-item" @click="routerChange = 3">
+                <router-link to="/homepage/comment">
+                    <span class="icon-rat-bar" :class="{current:routerChange == 3}"></span>
+                </router-link>
+            </div>
         </div>
-        <div class="nav-item" @click="routerChange = 0">
-            <router-link to="/homepage/music">
-                <span class="icon-music-bar" :class="{current:routerChange == 0}"></span>
-            </router-link>
-        </div>
-        <div class="nav-item" @click="routerChange = 1">
-            <router-link to="/homepage/lines">
-                <span class="icon-line-bar" :class="{current:routerChange == 1}"></span>
-            </router-link>
-        </div>
-        <div class="nav-item" @click="routerChange = 2">
-            <router-link to="/homepage/story">
-                <span class="icon-story-bar" :class="{current:routerChange == 2}"></span>
-            </router-link>
-        </div>
-        <div class="nav-item" @click="routerChange = 3">
-            <router-link to="/homepage/comment">
-                <span class="icon-rat-bar" :class="{current:routerChange == 3}"></span>
-            </router-link>
-        </div>
+        <!-- 间隙 -->
+        <div class="space"></div>
     </div>
 </template>
 

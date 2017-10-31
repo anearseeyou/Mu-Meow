@@ -113,7 +113,7 @@ export default new Router({
         },
         {
             name: 'musicdetail',
-            path: '/homepage/music/music-detail',
+            path: '/music-detail',
             component: MusicDetail
         },
         {

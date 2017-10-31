@@ -1,20 +1,20 @@
 <template>
     <!-- 音乐列表 -->
-    <div class="music-list">
-        <div class="music" v-for="music in homeData.music">
-            <!-- 间隙 -->
-            <div class="space"></div>
+    <div class="music-wrapper">
+        <div class="music" v-for="(music,index) in musicList.music">
             <!-- 内容 -->
             <div class="music-origin">
                 <div class="music-title">- 电影原声 -</div>
-                <div class="music-info" @click="musicDetail(music)">
+                <div class="music-info" @click="goDetail(music)">
                     <p class="music-name">{{ music.name }}</p>
                     <p class="music-sing">{{ music.singer }}</p>
                     <div class="music-rotate ">
                         <div class="music-circle"></div>
                         <a class="music-poster">
                             <img :src="music.poster">
-                            <div class="music-play"></div>
+                            <div @click.stop="audioPlay($event)" class="music-play">
+                                <audio ref="audio" :src="music.sourceUrl" type="audio/mp3" preload="none"></audio>
+                            </div>
                         </a>
                         <div class="text-bg clearfix"></div>
                     </div>
@@ -33,38 +33,47 @@
                     <i class="thumbs-num">{{ music.thumbs }}</i>
                 </span>
             </div>
+            <!-- 间隙 -->
+            <div class="space"></div>
         </div>
-        <!-- 暂无数据 -->
-        <none-data v-if="homeData.music" v-show="!homeData.music.length"></none-data>
-        <!-- 加载更多 -->
-        <more-data @loadMore="loadMore" :moreData="moreData"></more-data>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-    import NoneData from 'base/none-data/none-data';
-    import MoreData from 'base/more-data/more-data';
-    import {requestData, ERR_OK} from 'src/api/request';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params';
 
-    const URL = 'http://192.168.0.244:8081/web/m2/getMovieMusicByPage.do';
-
     export default{
         data(){
             return {
-                page: 2,
-                moreData: {}
+                playIndex: 0
             }
         },
         props: {
-            homeData: {
+            musicList: {
                 type: Object,
                 default: null
             }
         },
         methods: {
+            // 播放
+            audioPlay(event){
+                let audios = this.$refs.audio;
+                if (event.currentTarget.children[0].paused) {
+                    for (let i = 0, len = audios.length; i < len; i++) {
+                        audios[i].pause();
+                        audios[i].parentElement.className = 'music-play';
+                    }
+                    event.currentTarget.children[0].play();
+                    console.log(event.currentTarget.className);
+                    event.currentTarget.className = 'music-pause';
+                }
+                else {
+                    event.currentTarget.children[0].pause();
+                    event.currentTarget.className = 'music-play';
+                }
+            },
             // 点赞
             musicLike(music){
                 this._callFn(isLike, music, params.musicLike);
@@ -83,9 +92,8 @@
                 }
             },
             // 跳转详情页
-            musicDetail(music){
+            goDetail(music){
                 let musicId = music.id;
-                document.body.scrollTop = 0;
                 this.$router.push({name: 'musicdetail', params: {id: musicId}});
             },
             // 回调函数
@@ -97,32 +105,11 @@
                     this.$router.push({name: 'login'});
                 }
             },
-            // 加载更多
-            loadMore(){
-                requestData(URL, {
-                    page: this.page,
-                    accountId: params.accountId,
-                    pageSize: params.morePageSize,
-                    movieId: this.homeData.id,
-                }).then((res) => {
-                    if (res.code === ERR_OK) {
-                        this.moreData = res.data;
-                        for (let i = 0, len = this.moreData.length; i < len; i++) {
-                            this.homeData.music.push(this.moreData[i]);
-                        }
-                    }
-                })
-            }
-        },
-        components: {
-            NoneData,
-            MoreData
-        },
+        }
     }
 </script>
 
 <style lang="less" rel="stylesheet/less">
-
     .music {
         text-align: center;
         position: relative;
@@ -134,14 +121,14 @@
             font-size: 24px;
             color: #aaaaaa;
             text-align: center;
-            margin-bottom: 40px;
+            margin: 40px 0;
         }
         .music-name {
             font-size: 36px;
             margin-bottom: 20px;
         }
         .music-sing {
-            font-size: 30px;
+            font-size: 26px;
             margin-bottom: 40px;
         }
         .music-info {
@@ -171,9 +158,10 @@
                     & > img {
                         width: 300px;
                         height: 300px;
+                        border-radius: 3px;
                     }
                 }
-                .music-play {
+                .music-play, .music-pause {
                     position: absolute;
                     left: 50%;
                     top: 50%;
@@ -181,12 +169,19 @@
                     margin-top: -40px;
                     width: 80px;
                     height: 80px;
+
+                }
+                .music-play {
                     background: url("img/music-play.png") no-repeat;
-                    background-size: 80px 80px;
+                    background-size: 100% 100%;
+                }
+                .music-pause {
+                    background: url("img/music-pause.png") no-repeat;
+                    background-size: 100% 100%;
                 }
                 .text-bg {
                     width: 62px;
-                    height: 350px;
+                    height: 300px;
                     background: url("img/text-bgc.png") no-repeat right center;
                     background-size: 100% 100%;
                     position: absolute;

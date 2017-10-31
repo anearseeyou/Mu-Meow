@@ -1,7 +1,5 @@
 <template>
     <div class="none-data">
-        <!-- 间隙 -->
-        <div class="space"></div>
         <div class="none-wrap">
             <span class="none-img"></span>
             <p class="none-text">{{ noneText }}</p>

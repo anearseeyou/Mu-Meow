@@ -45,7 +45,7 @@
     export default {
         data(){
             return {
-                addPage: 4,
+                addPage: 3,
                 homeData: {},
                 arrayData: [],
             }

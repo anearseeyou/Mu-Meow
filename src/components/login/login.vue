@@ -3,7 +3,7 @@
         <div class="sign-wrapper">
             <!-- 登录 -->
             <div class="head-wrap">
-                <div class="sign-head">
+                <div class="head">
                     <div class="back-wrap" @click="back"><a class="back-btn"></a></div>
                     <div class="play-title">登录幕喵</div>
                 </div>
@@ -136,36 +136,6 @@
         width: 100%;
         height: 100%;
         background: #FFFFFF;
-        .head-wrap {
-            width: 100%;
-            height: 88px;
-            .sign-head {
-                width: 100%;
-                height: 88px;
-                line-height: 88px;
-                text-align: center;
-                background: #151519;
-                box-sizing: border-box;
-                position: fixed;
-                top: 0;
-                z-index: 22;
-                color: #ffffff;
-                font-size: 36px;
-                .back-wrap {
-                    width: 100px;
-                    height: 100%;
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                }
-                .back-btn {
-                    width: 18px;
-                    height: 30px;
-                    background: url('img/back.png') no-repeat;
-                    background-size: 100% 100%;
-                }
-            }
-        }
         .sign-in {
             margin: 100px auto;
             padding: 0 30px;
