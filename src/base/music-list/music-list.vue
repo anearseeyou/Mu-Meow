@@ -5,7 +5,7 @@
             <!-- 内容 -->
             <div class="music-origin">
                 <div class="music-title">- 电影原声 -</div>
-                <div class="music-info" @click="goDetail(music)">
+                <div class="music-info" @click="goDetail(music,musicList)">
                     <p class="music-name">{{ music.name }}</p>
                     <p class="music-sing">{{ music.singer }}</p>
                     <div class="music-rotate ">
@@ -92,9 +92,15 @@
                 }
             },
             // 跳转详情页
-            goDetail(music){
+            goDetail(music, posterArray){
                 let musicId = music.id;
-                this.$router.push({name: 'musicdetail', params: {id: musicId}});
+                this.$router.push({
+                    name: 'musicdetail',
+                    params: {
+                        id: musicId,
+                        posters: posterArray
+                    }
+                })
             },
             // 回调函数
             _callFn(callName, target, type){

@@ -8,7 +8,7 @@
             </div>
         </div>
         <!-- 电影海报 -->
-        <div class="slider" ref="slider" v-if="arrayData.length">
+        <div class="slider-banner" ref="slider" v-if="arrayData.length">
             <ul class="slider-group" ref="sliderGroup">
                 <li @touchstart="beginTouch"
                     @touchmove.prevent="moveTouch($event,index)"
@@ -135,6 +135,7 @@
                                 return a.id - b.id;
                             });
                             this.homeData = this.arrayData[0];
+                            // console.log(this.homeData);
                         }
                     })
                 }
@@ -215,7 +216,7 @@
         }
     }
 
-    .slider {
+    .slider-banner {
         margin: 30px 0;
         min-height: 1px;
         .slider-group {

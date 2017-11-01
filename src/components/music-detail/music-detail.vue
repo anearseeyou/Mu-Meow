@@ -1,5 +1,5 @@
 <template>
-    <detail :musicDetail="musicDetail"></detail>
+    <detail :music-detail="musicDetail" :posters-arr="postersArr"></detail>
 </template>
 
 <script type="text/ecmascript-6">
@@ -13,6 +13,7 @@
         data(){
             return {
                 musicDetail: {},
+                postersArr: []
             }
         },
         mounted(){
@@ -23,6 +24,7 @@
             musicDetailData(){
                 document.body.scrollTop = 0;
                 if (this.$route.params.id) {
+                    this.postersArr = this.$route.params.posters;
                     requestData(URL, {
                         musicId: this.$route.params.id,
                         accountId: params.accountId,
@@ -30,6 +32,7 @@
                     }).then((res) => {
                         if (res.code === ERR_OK) {
                             this.musicDetail = res.data;
+                            console.log(this.musicDetail);
                         }
                     });
                 }

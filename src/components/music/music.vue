@@ -47,11 +47,28 @@
                     }
                 })
             },
+            // 更新列表
+            _updateMusicList(){
+                requestData(URL, {
+                    page: params.page,
+                    pageSize: params.morePageSize,
+                    movieId: this.homeData.id,
+                }).then((res) => {
+                    if (res.code === ERR_OK) {
+                        this.homeData.music = res.data;
+                    }
+                })
+            }
         },
         components: {
             MusicList,
             NoneData,
             MoreData,
+        },
+        watch: {
+            $route(){
+                this._updateMusicList();
+            }
         }
     }
 </script>

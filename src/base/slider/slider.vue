@@ -3,47 +3,61 @@
         <div class="slider-group" ref="sliderGroup">
             <slot></slot>
         </div>
+        <div class="dots">
+            <span class="dot"></span>
+        </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import BScroll from 'better-scroll';
     import {addClass} from 'common/js/dom';
-    import {requestData} from 'src/api/request';
-    import {params} from 'src/api/params';
 
     export default{
         data(){
             return {
-                page: 3
+                dots: [],
+                currentPageIndex: 0
             }
         },
-        created(){
+        props: {
+            loop: {
+                type: Boolean,
+                default: true
+            },
+            autoPlay: {
+                type: Boolean,
+                default: true
+            },
+            interval: {
+                type: Number,
+                default: 2000
+            }
+        },
+        mounted(){
             // 加载时 初始化组件
             setTimeout(() => {
                 this._setSliderWidth();
+                this._initDots();
                 this._initSlider();
             }, 20);
+
+            // 自动轮播
+            if (this.autoPlay) {
+                this._play();
+            }
 
             // 监听视口发生改变
             window.addEventListener('resize', () => {
                 if (!this.slider) return;
-                this._setSliderWidth();
+                this._setSliderWidth(true);
                 this.slider.refresh();
             });
         },
-        props: {
-            arrayData: {
-                type: Array,
-                default: null
-            },
-            homeData: {
-                type: Object,
-                default: null
-            }
-        },
+
         methods: {
-            _setSliderWidth(){
+            // 设置宽度
+            _setSliderWidth(isResize){
                 // 获取轮播项
                 this.children = this.$refs.sliderGroup.children;
 
@@ -58,7 +72,18 @@
                     containerWidth += sliderWidth;
                 }
                 this.$refs.sliderGroup.style.width = containerWidth + 'px';
+
+                if (this.loop && !isResize) {
+                    containerWidth += 2 * sliderWidth;
+                }
+                this.$refs.sliderGroup.style.width = containerWidth + 'px';
             },
+            // 初始化小圆点
+            _initDots(){
+                // 在拷贝图片之前 初始化小圆点 和图片的数量保持一致
+                this.dots = new Array(this.children.length);
+            },
+            // 初始化
             _initSlider(){
                 this.slider = new BScroll(this.$refs.slider, {
                     scrollX: true,
@@ -68,29 +93,36 @@
                     snap: {
                         speed: 400,
                         threshold: 0.3,
+                        loop: this.loop,
                     },
                 });
 
-                // 监听滚动结束 设置索引
+                // 监听滚动结束
                 this.slider.on('scrollEnd', () => {
                     // bette-scroll中获取当前元素索引的方法
                     let pageIndex = this.slider.getCurrentPage().pageX;
-                    let url = 'http://api.mumiao.distspace.com/web/m2/index.do';
-                    requestData(url, {
-                        page: this.page++,
-                        pageSize: params.pageSize,
-                        accountId: params.accountId,
-                        accessToken: params.accessToken
-                    }).then((res) => {
-                        if (res.code === 0) {
-                            this.arrayData.push(res.data[0]);
-                            this.homeData = this.arrayData[pageIndex];
-                            this._setSliderWidth();
-                            this.$emit('change', this.homeData);
-                        }
-                    })
+                    // 如果是循环播放的话 当前索引得-1
+                    if (this.loop) pageIndex -= 1;
+                    this.currentPageIndex = pageIndex;
+
+                    if (this.autoPlay) {
+                        clearTimeout(this.timer);
+                        this._play();
+                    }
                 });
+            },
+
+            // 自动轮播
+            _play(){
+                let pageIndex = this.currentPageIndex + 1;
+                if (this.loop) pageIndex += 1;
+                this.timer = setTimeout(() => {
+                    this.slider.goToPage(pageIndex, 0, 400);
+                }, this.interval);
             }
+        },
+        destroyed(){
+            clearTimeout(this.timer);
         }
     }
 </script>
@@ -99,6 +131,7 @@
 
     .slider {
         min-height: 1px;
+        position: relative;
         .slider-group {
             position: relative;
             overflow: hidden;

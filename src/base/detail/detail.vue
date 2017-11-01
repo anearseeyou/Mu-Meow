@@ -1,184 +1,256 @@
 <template>
     <transition name="detail">
-        <!-- 歌词详情页 -->
-        <div class="lyric-wrapper">
-            <!-- 头部 -->
-            <div class="head-wrap">
-                <div class="head">
-                    <div class="back-wrap" @click="back"><a class="back-btn"></a></div>
-                    <div class="play-title">{{ musicDetail.name }}</div>
-                    <div class="share-wrap" @share="share"><a class="share-btn"></a></div>
+        <div class="detail-wrapper" ref="detail">
+            <!-- 歌词详情页 -->
+            <div class="lyric-wrapper">
+                <!-- 头部 -->
+                <div class="head-wrap">
+                    <div class="head">
+                        <div class="back-wrap" @click="back"><a class="back-btn"></a></div>
+                        <div class="play-title">{{ musicDetail.name }}</div>
+                        <div class="share-wrap" @click="shareLink"><a class="share-btn"></a></div>
+                    </div>
                 </div>
-            </div>
-            <!-- 歌词海报 -->
-            <div class="play-video">
-                <div class="lines-poster">
-                    <img :src="musicDetail.poster">
-                    <i class="play-bar"></i>
+                <!-- 歌词海报 -->
+                <div class="play-video">
+                    <div class="slider-wrap" v-if="postersArr.posters">
+                        <slider>
+                            <div class="lines-poster" v-for="poster in postersArr.posters">
+                                <img class="slider-poster" :src="poster">
+                            </div>
+                        </slider>
+                        <i class="play-bar"></i>
+                    </div>
+                    <div class="control clearfix">
+                        <span class="fl">01:00</span>
+                        <span class="fl ctrl-bar"><i class="mask-bar"></i></span>
+                        <span class="fr">04:22</span>
+                    </div>
                 </div>
-                <div class="control clearfix">
-                    <span class="fl">01:00</span>
-                    <span class="fl ctrl-bar"><i class="mask-bar"></i></span>
-                    <span class="fr">04:22</span>
-                </div>
-            </div>
-            <!-- 歌词导航 -->
-            <div class="lyric-tab">
-                <div class="lines-text">
-                    <span v-show="lyricTab == 0" class="line-title">电影歌词</span>
-                    <span v-show="lyricTab == 1" class="line-title">电影故事</span>
-                </div>
-                <div class="movie-lyric" @click="lyricTab = 0">
-                    <span class="line-lyric" :class="lyricTab == 0 ? 'clickLyric' : ''"></span>
-                </div>
-                <div class="movie-lyric" @click="lyricTab = 1">
-                    <span class="line-story" :class="lyricTab == 1 ? 'clickStory' : ''"></span>
-                </div>
-            </div>
-            <!-- 背景 -->
-            <div class="space"></div>
-            <!-- 歌词内容 -->
-            <div class="lyric-content">
-                <div class="text-sty" v-show="lyricTab == 0">
-                    <p class="sing-text lyric-text" v-html="musicDetail.lyric"></p>
-                    <none-data v-show="!musicDetail.lyric"></none-data>
-                </div>
-                <div class="text-sty" v-show="lyricTab == 1">
-                    <p class="sing-text" v-html="musicDetail.summary"></p>
-                    <none-data v-show="!musicDetail.summary"></none-data>
-                </div>
-                <!-- 胶片背景 -->
-                <div class="space"></div>
-                <div class="comment-list">
+                <!-- 歌词导航 -->
+                <div class="lyric-tab">
                     <div class="lines-text">
-                        <div class="comment-tilte clearfix">
-                            <span class="icon-rat-bar fl"></span>
-                            <span class="fl">评论列表</span>
-                        </div>
-                        <!-- 评论列表页 -->
-                        <div v-for="comment in musicDetail.ratings" class="ratings-list">
-                            <div class="clearfix">
-                                <div class="user-portrait fl">
-                                    <img :src="musicDetail.avatar">
-                                </div>
-                                <div class="user-info fr">
-                                    <div class="user-name clearfix">
-                                        <span class="fl">{{ comment.username }}</span>
-                                        <span class="fabu-num fr">{{ comment.thumbs }}</span>
-                                        <span class="icon-thumbs-bar fr"></span>
+                        <span v-show="lyricTab == 0" class="line-title">电影歌词</span>
+                        <span v-show="lyricTab == 1" class="line-title">电影故事</span>
+                    </div>
+                    <div class="movie-lyric" @click="lyricTab = 0">
+                        <span class="line-lyric" :class="lyricTab == 0 ? 'clickLyric' : ''"></span>
+                    </div>
+                    <div class="movie-lyric" @click="lyricTab = 1">
+                        <span class="line-story" :class="lyricTab == 1 ? 'clickStory' : ''"></span>
+                    </div>
+                </div>
+                <!-- 背景 -->
+                <div class="space"></div>
+                <!-- 歌词内容 -->
+                <div class="lyric-content">
+                    <div class="text-sty" v-show="lyricTab == 0">
+                        <p class="sing-text lyric-text" v-html="musicDetail.lyric"></p>
+                        <none-data v-show="!musicDetail.lyric"></none-data>
+                    </div>
+                    <div class="text-sty" v-show="lyricTab == 1">
+                        <p class="sing-text" v-html="musicDetail.summary"></p>
+                        <none-data v-show="!musicDetail.summary"></none-data>
+                    </div>
+                    <!-- 胶片背景 -->
+                    <div class="space"></div>
+                    <div class="comment-list">
+                        <div class="lines-text">
+                            <div class="comment-tilte clearfix">
+                                <span class="icon-rat-bar fl"></span>
+                                <span class="fl">评论列表</span>
+                            </div>
+                            <!-- 评论列表页 -->
+                            <div v-for="comment in musicDetail.ratings" class="ratings-list">
+                                <div class="clearfix">
+                                    <div class="user-portrait fl">
+                                        <img :src="musicDetail.poster">
                                     </div>
-                                    <p class="rat-date">{{ comment.rateTime }}</p>
-                                    <p class="text-sty change-sty">{{ comment.content }}</p>
+                                    <div class="user-info fr">
+                                        <div class="user-name clearfix">
+                                            <span class="fl">anearseeyou</span>
+                                            <span class="fabu-num fr">{{ comment.thumbs }}</span>
+                                            <span class="icon-thumbs-bar fr"
+                                                  :class="comment.myIsPraise ? 'clickThumbs' : ''"
+                                                  @click="commentLike(comment)">
+                                        </span>
+                                        </div>
+                                        <p class="rat-date">{{ comment.rateTime }}</p>
+                                        <p class="change-sty">{{ comment.content }}</p>
+                                    </div>
                                 </div>
                             </div>
+                            <none-data v-show="musicDetail.ratings == 0"></none-data>
                         </div>
-                        <none-data v-show="musicDetail.ratings == 0"></none-data>
+                    </div>
+                </div>
+                <!-- 底部固定 -->
+                <div class="rat-footer">
+                    <div class="rat-left">
+                        <span class="left-bar icon-write-bar" @click="writeComment"></span>
+                        <span class="left-bar icon-collect-bar"
+                              :class="musicDetail.myIsCollect ? 'clickCollect' : ''"
+                              @click="musicCollect(musicDetail)">
+                    </span>
+                        <span class="left-bar icon-thumbs-bar"
+                              :class="musicDetail.myIsPraise ? 'clickThumbs' : ''"
+                              @click="musicLike(musicDetail)">
+                    </span>
+                    </div>
+                    <div class="rat-middle"></div>
+                    <div class="rat-right">
+                        <span class="right-bar">{{ musicDetail.thumbs }} 赞</span>
+                        <span class="right-bar">{{ musicDetail.total }} 评论</span>
                     </div>
                 </div>
             </div>
-            <!-- 底部固定 -->
-            <div class="rat-footer">
-                <div class="rat-left">
-                    <span class="left-bar icon-write-bar"></span>
-                    <span class="left-bar icon-collect-bar"
-                          :class="musicDetail.myIsCollect ? 'clickCollect' : ''"
-                          @click="musicCollect(musicDetail)">
-                    </span>
-                    <span class="left-bar icon-thumbs-bar"
-                          :class="musicDetail.myIsPraise ? 'clickThumbs' : ''"
-                          @click="musicLike(musicDetail)">
-                    </span>
+            <!-- 评论弹层 -->
+            <div v-show="isShow" class="write-rat">
+                <div class="write-content">
+                    <textarea class="write-pl" placeholder="在这里写下你想说的话"
+                              @input="textareaText" v-model="commentContent">
+                    </textarea>
+                    <p class="textarea-text"><span class="text-ctrl">{{remnant}}</span>/100</p>
                 </div>
-                <div class="rat-middle"></div>
-                <div class="rat-right">
-                    <span class="right-bar">{{ musicDetail.thumbs }} 赞</span>
-                    <span class="right-bar">{{ musicDetail.total }} 评论</span>
+                <div class="write-relace fr">
+                    <span class="write-relace-btn" @click="release(musicDetail)">发布</span>
                 </div>
+                <i class="write-close" @click="hideLayer"></i>
             </div>
+            <!-- 分享层 -->
+            <share v-show="layer" @close="close"></share>
+            <!-- 遮罩 -->
+            <div v-show="flag" class="layer" ref="layer" @touchmove.prevent></div>
         </div>
-        <!-- 分享弹层 -->
-        <!--<div v-show="flag" class="float-layer"></div>-->
-        <!--<div v-show="flag" class="share-layer">
-            <div class="share-to font48">分享到</div>
-            <div class="share-link">
-                <a class="share-link-to" href="javascript:;">
-                    <span class="share-toqq"></span><br>
-                    <em>QQ</em>
-                </a>
-                <a class="share-link-to" href="javascript:;">
-                    <span class="share-tofr"></span><br>
-                    <em>朋友圈</em>
-                </a>
-                <a class="share-link-to" href="javascript:;">
-                    <span class="share-towb"></span><br>
-                    <em>微博</em>
-                </a>
-                <a class="share-link-to" href="javascript:;">
-                    <span class="share-towx"></span><br>
-                    <em>微信好友</em>
-                </a>
-            </div>
-            <div class="share-close">
-                <i @click="shareLink" class="share-close-bar"></i>
-            </div>
-        </div>-->
-        <!-- 写评论弹层 -->
-        <!--<div v-show="isRatingsShow" class="write-rat">
-            <div class="write-content">
-                        <textarea class="text-sty none-indent write-pl" placeholder="在这里写下你想说的话"
-                                  @input="textareaText" v-model="ratContent">
-                        </textarea>
-                <p class="textarea-text"><span class="text-ctrl">{{remnant}}</span>/100</p>
-            </div>
-            <div class="write-relace fr">
-                <span class="write-relace-btn" @click="musicRatings(music)">发布</span>
-            </div>
-            <i class="write-close" @click="hideLayer"></i>
-        </div>-->
     </transition>
 </template>
 
 <script type="text/ecmascript-6">
     import NoneData from 'base/none-data/none-data';
-    import {isLike} from 'src/api/isLike'
-    import {isCollect} from 'src/api/isCollect'
+    import Slider from 'base/slider/slider';
+    import Share from 'base/share/share';
+    import {requestData, ERR_OK} from 'api/request';
+    import {isLike} from 'src/api/isLike';
+    import {isCollect} from 'src/api/isCollect';
+    import {params} from 'src/api/params';
+
+    const NAV_HEIGHT = 98;
+    const RELEASE_URL = 'http://api.mumiao.distspace.com/web/m2/insertComment.do';
+    const QUERY_URL = 'http://api.mumiao.distspace.com/web/m2/getComment.do';
 
     export default{
         data(){
             return {
                 lyricTab: 0,
+                remnant: 0,
+                flag: false,
+                isShow: false,
+                layer: false,
+                hotComment: {},
+                commentContent: ""
             }
         },
         props: {
             musicDetail: {
                 type: Object,
                 default: null
-            }
+            },
+            postersArr: {}
         },
         methods: {
             // 返回
             back(){
                 this.$router.back();
             },
-            share(){
-
+            // 分享
+            shareLink(){
+                this._layer();
+                this.layer = true;
             },
-            // 点赞
+            // 关闭分享
+            close(){
+                this.flag = false;
+                this.layer = false;
+            },
+            // 显示输入框
+            writeComment(){
+                this._layer();
+                this.isShow = true;
+            },
+            // 字数限制
+            textareaText(){
+                this.remnant = this.commentContent.length;
+                if (this.remnant > 100) {
+                    this.remnant = 100;
+                    this.commentContent = this.commentContent.substr(0, 100);
+                    alert("您最多只能输入100个字哦,亲");
+                }
+            },
+            // 发布
+            release(music){
+                requestData(RELEASE_URL, {
+                    targetId: music.id,
+                    commentText: this.commentContent,
+                    commentType: params.musicComment,
+                    accountId: params.accountId,
+                    accessToken: params.accessToken
+                }).then((res) => {
+                    if (res.code === ERR_OK) {
+                        this.hideLayer();
+                        this.commentContent = "";
+                        requestData(QUERY_URL, {
+                            targetId: music.id,
+                            page: params.page,
+                            pageSize: params.pageSize,
+                            targetType: params.musicComment,
+                            accountId: params.accountId,
+                            accessToken: params.accessToken
+                        }).then((res) => {
+                            if (res.code === ERR_OK) {
+                                this.hotComment = res.data;
+                                // 将评论信息追加到评论信息列表
+                                this.musicDetail.ratings.unshift(this.hotComment[0]);
+                            }
+                        })
+                    }
+                })
+            },
+            // 隐藏输入框
+            hideLayer(){
+                this.flag = false;
+                this.isShow = false;
+                this.remnant = 0;
+                this.commentContent = "";
+            },
+            // 评论点赞
+            commentLike(_comment){
+                isLike(_comment, params.commentLike);
+            },
+            // 音乐点赞
             musicLike(_music){
                 isLike(_music, params.musicLike);
             },
             // 收藏
             musicCollect(_music){
                 isCollect(_music, params.musicCollect);
+            },
+            // 浮层
+            _layer(){
+                let detailHeight = this.$refs.detail.clientHeight;
+                this.$refs.layer.style.height = detailHeight + NAV_HEIGHT + 'px';
+                this.flag = true;
             }
         },
         components: {
-            NoneData
+            NoneData,
+            Slider,
+            Share
         }
     }
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
+
     .lyric-wrapper {
         .play-video {
             .lines-poster {
@@ -206,6 +278,9 @@
             }
             .pause-bar {
                 background-image: url("img/music-pause.png");
+            }
+            .slider-wrap {
+                position: relative;
             }
         }
         .control {
@@ -328,7 +403,7 @@
                     width: 100%;
                     height: 60px;
                     line-height: 60px;
-                    font-size: 34px;
+                    font-size: 30px;
                     margin-bottom: 5px;
                 }
                 .rat-date {
@@ -352,8 +427,9 @@
                 margin-right: 30px;
             }
             .change-sty {
-                margin-right: 30px;
-                margin-bottom: 10px;
+                font-size: 28px;
+                line-height: 50px;
+                margin: 20px 30px 20px 0;
             }
         }
         .rat-footer {
@@ -412,6 +488,79 @@
                 }
             }
         }
+    }
+
+    .write-rat {
+        width: 100%;
+        position: fixed;
+        top: 50%;
+        margin-top: -150px;
+        box-sizing: border-box;
+        z-index: 24;
+        .write-content {
+            height: 300px;
+            margin: 30px;
+            padding: 20px;
+            font-size: 30px;
+            border-radius: 10px;
+            border: 1px solid #bfbfbf;
+            background: #ffffff;
+            overflow: hidden;
+            position: relative;
+            .write-pl {
+                width: 100%;
+                height: 100%;
+                line-height: 50px;
+                font-size: 30px;
+                border: none;
+                outline: none;
+                resize: none;
+                color: #333;
+                overflow: hidden;
+            }
+        }
+        .textarea-text {
+            bottom: 30px;
+            right: 40px;
+            font-size: 24px;
+            color: #aaaaaa;
+            position: absolute;
+            .text-ctrl {
+                display: inline-block;
+            }
+        }
+        .write-relace {
+            width: 100px;
+            height: 60px;
+            line-height: 60px;
+            margin: 0 30px 10px 0;
+            background: #161619;
+            border-radius: 8px;
+            .write-relace-btn {
+                text-align: center;
+                color: #fff;
+                font-size: 26px;
+            }
+        }
+        .write-close {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            right: 30px;
+            top: -30px;
+            z-index: 21;
+            background: url("img/write-close.png") no-repeat;
+            background-size: 100% 100%;
+        }
+    }
+
+    .layer {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 23;
+        background: rgba(0, 0, 0, 0.2);
     }
 
     .detail-enter-active, .detail-leave-active {
