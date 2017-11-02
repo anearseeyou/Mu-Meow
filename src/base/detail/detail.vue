@@ -19,13 +19,16 @@
                                 <img class="slider-poster" :src="poster">
                             </div>
                         </slider>
-                        <i class="play-bar"></i>
+                        <i @click="togglePlaying" class="play-bar" ref="playIcon"></i>
                     </div>
-                    <div class="control clearfix">
-                        <span class="fl">01:00</span>
-                        <span class="fl ctrl-bar"><i class="mask-bar"></i></span>
-                        <span class="fr">04:22</span>
+                    <div class="progress-wrapper">
+                        <span class="time time-l">{{formate(currentTime)}}</span>
+                        <div class="progress-bar-wrapper">
+                            <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
+                        </div>
+                        <span class="time time-r">{{ formate(duration) }}</span>
                     </div>
+                    <audio :src="musicDetail.sourceUrl" ref="audio" @timeupdate="uptateTime" @ended="end"></audio>
                 </div>
                 <!-- 歌词导航 -->
                 <div class="lyric-tab">
@@ -40,7 +43,7 @@
                         <span class="line-story" :class="lyricTab == 1 ? 'clickStory' : ''"></span>
                     </div>
                 </div>
-                <!-- 背景 -->
+                <!-- 间隙 -->
                 <div class="space"></div>
                 <!-- 歌词内容 -->
                 <div class="lyric-content">
@@ -105,7 +108,7 @@
                 </div>
             </div>
             <!-- 评论弹层 -->
-            <div v-show="isShow" class="write-rat">
+            <div v-show="isFlag" class="write-rat">
                 <div class="write-content">
                     <textarea class="write-pl" placeholder="在这里写下你想说的话"
                               @input="textareaText" v-model="commentContent">
@@ -122,6 +125,7 @@
             <!-- 遮罩 -->
             <div v-show="flag" class="layer" ref="layer" @touchmove.prevent></div>
         </div>
+
     </transition>
 </template>
 
@@ -129,6 +133,7 @@
     import NoneData from 'base/none-data/none-data';
     import Slider from 'base/slider/slider';
     import Share from 'base/share/share';
+    import ProgressBar from 'base/progress-bar/progress-bar';
     import {requestData, ERR_OK} from 'api/request';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
@@ -143,11 +148,13 @@
             return {
                 lyricTab: 0,
                 remnant: 0,
+                duration: 0,
+                currentTime: 0,
                 flag: false,
-                isShow: false,
+                isFlag: false,
                 layer: false,
                 hotComment: {},
-                commentContent: ""
+                commentContent: "",
             }
         },
         props: {
@@ -157,10 +164,20 @@
             },
             postersArr: {}
         },
+        computed: {
+            percent(){
+                return this.currentTime / this.duration;
+            },
+        },
+        created(){
+            this.totalDuration();
+        },
         methods: {
             // 返回
             back(){
                 this.$router.back();
+                this.$refs.audio.currentTime = 0;
+                this.$refs.playIcon.className = 'play-bar';
             },
             // 分享
             shareLink(){
@@ -175,7 +192,7 @@
             // 显示输入框
             writeComment(){
                 this._layer();
-                this.isShow = true;
+                this.isFlag = true;
             },
             // 字数限制
             textareaText(){
@@ -218,7 +235,7 @@
             // 隐藏输入框
             hideLayer(){
                 this.flag = false;
-                this.isShow = false;
+                this.isFlag = false;
                 this.remnant = 0;
                 this.commentContent = "";
             },
@@ -234,6 +251,60 @@
             musicCollect(_music){
                 isCollect(_music, params.musicCollect);
             },
+            // 总时长
+            totalDuration(){
+                if (this.musicDetail) {
+                    setTimeout(() => {
+                        this.duration = this.$refs.audio.duration;
+
+                    }, 200);
+                }
+            },
+            // 播放切换
+            togglePlaying(){
+                if (this.$refs.audio.paused) {
+                    this.$refs.audio.play();
+                    this.$refs.playIcon.className = 'pause-bar';
+                }
+                else {
+                    this.$refs.audio.pause();
+                    this.$refs.playIcon.className = 'play-bar';
+                }
+            },
+            // 更新播放时间
+            uptateTime(e){
+                this.currentTime = e.target.currentTime;
+            },
+            // 拖动进度
+            onProgressBarChange(percent){
+                this.$refs.audio.currentTime = this.duration * percent;
+                if (this.$refs.audio.paused) {
+                    this.$refs.audio.play();
+                    this.$refs.playIcon.className = 'pause-bar';
+                }
+                this.$refs.audio.play();
+            },
+            // 播放到结尾
+            end(){
+                this.$refs.audio.pause();
+                this.$refs.playIcon.className = 'play-bar';
+            },
+            // 规范时间
+            formate(interval){
+                interval = interval | 0   // | 0 是向下取整的意思
+                const minute = interval / 60 | 0;
+                const second = this._pad(interval % 60);
+                return `${minute}:${second}`;
+            },
+            // 规范字符串
+            _pad(num, n = 2){  // n代表字符串的第2位开始 补0
+                let len = num.toString().length;
+                while (len < n) {
+                    num = '0' + num;
+                    len++
+                }
+                return num;
+            },
             // 浮层
             _layer(){
                 let detailHeight = this.$refs.detail.clientHeight;
@@ -241,10 +312,20 @@
                 this.flag = true;
             }
         },
+        beforeRouteLeave(to, from){
+            console.log(to);
+            console.log(from);
+        },
+        watch: {
+            $route(){
+                this.totalDuration();
+            },
+        },
         components: {
             NoneData,
             Slider,
-            Share
+            Share,
+            ProgressBar
         }
     }
 </script>
@@ -319,7 +400,7 @@
         .lyric-tab {
             display: flex;
             font-size: 36px;
-            margin: 40px 30px 40px 30px;
+            margin: 20px 30px 30px 30px;
             .lines-text {
                 flex: 8;
             }
@@ -418,7 +499,7 @@
                     display: block;
                     height: 1px;
                     width: 100%;
-                    background: rgba(237, 237, 237, .5);
+                    background: rgb(237, 237, 237);
                 }
             }
             .fabu-num {
@@ -487,6 +568,28 @@
                     top: 32px;
                 }
             }
+        }
+    }
+
+    .progress-wrapper {
+        display: flex;
+        height: 80px;
+        margin: 0px 30px;
+        align-items: center;
+        .time {
+            flex: 1;
+            color: #333;
+            font-size: 24px;
+            line-height: 30px;
+        }
+        .time-l {
+            text-align: left;
+        }
+        .time-r {
+            text-align: right;
+        }
+        .progress-bar-wrapper {
+            flex: 8
         }
     }
 

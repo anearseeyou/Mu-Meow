@@ -11,7 +11,7 @@
                     <div class="music-rotate ">
                         <div class="music-circle"></div>
                         <a class="music-poster">
-                            <img :src="music.poster">
+                            <img :src="music.poster ? music.poster : 'static/img/no-poster.png'">
                             <div @click.stop="audioPlay($event)" class="music-play">
                                 <audio ref="audio" :src="music.sourceUrl" type="audio/mp3" preload="none"></audio>
                             </div>
@@ -194,6 +194,24 @@
                     right: 0;
                     top: 0;
                 }
+            }
+        }
+        .music-bar {
+            display: flex;
+            height: 60px;
+            color: #aaaaaa;
+            text-align: center;
+            border-top: 1px solid rgba(237, 237, 237, 0.5);
+            border-bottom: 1px solid rgba(237, 237, 237, 0.5);
+            .icon-share-bar, .icon-thumbs-bar, .icon-collect-bar {
+                flex: 33;
+            }
+            .thumbs-num {
+                font-size: 24px;
+                height: 60px;
+                line-height: 60px;
+                margin-left: 80px;
+                padding-top: 6px;
             }
         }
     }
