@@ -32,7 +32,6 @@
                     }).then((res) => {
                         if (res.code === ERR_OK) {
                             this.musicDetail = res.data;
-                            // console.log(this.musicDetail);
                         }
                     });
                 }

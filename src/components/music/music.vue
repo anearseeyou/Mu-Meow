@@ -16,7 +16,7 @@
     import {requestData, ERR_OK} from 'src/api/request';
     import {params} from 'src/api/params';
 
-    const URL = 'http://192.168.0.244:8081/web/m2/getMovieMusicByPage.do';
+    const URL = 'http://api.mumiao.distspace.com/web/m2/getMovieMusicByPage.do';
 
     export default{
         data(){
@@ -56,6 +56,7 @@
                 }).then((res) => {
                     if (res.code === ERR_OK) {
                         this.homeData.music = res.data;
+                        console.log(this.homeData.music);
                     }
                 })
             }

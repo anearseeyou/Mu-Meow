@@ -13,7 +13,7 @@
                 </div>
                 <!-- 歌词海报 -->
                 <div class="play-video">
-                    <div class="slider-wrap" v-if="postersArr.posters">
+                    <div class="slider-wrap">
                         <slider>
                             <div class="lines-poster" v-for="poster in postersArr.posters">
                                 <img class="slider-poster" :src="poster">
@@ -28,7 +28,8 @@
                         </div>
                         <span class="time time-r">{{ formate(duration) }}</span>
                     </div>
-                    <audio :src="musicDetail.sourceUrl" ref="audio" @timeupdate="uptateTime" @ended="end"></audio>
+                    <audio :src="musicDetail.sourceUrl" ref="audio" @canplay="ready" @timeupdate="uptateTime"
+                           @ended="end"></audio>
                 </div>
                 <!-- 歌词导航 -->
                 <div class="lyric-tab">
@@ -71,7 +72,7 @@
                                     </div>
                                     <div class="user-info fr">
                                         <div class="user-name clearfix">
-                                            <span class="fl">anearseeyou</span>
+                                            <span class="fl">{{ comment.username }}</span>
                                             <span class="fabu-num fr">{{ comment.thumbs }}</span>
                                             <span class="icon-thumbs-bar fr"
                                                   :class="comment.myIsPraise ? 'clickThumbs' : ''"
@@ -125,7 +126,6 @@
             <!-- 遮罩 -->
             <div v-show="flag" class="layer" ref="layer" @touchmove.prevent></div>
         </div>
-
     </transition>
 </template>
 
@@ -150,6 +150,7 @@
                 remnant: 0,
                 duration: 0,
                 currentTime: 0,
+                songReady: false,
                 flag: false,
                 isFlag: false,
                 layer: false,
@@ -168,9 +169,6 @@
             percent(){
                 return this.currentTime / this.duration;
             },
-        },
-        created(){
-            this.totalDuration();
         },
         methods: {
             // 返回
@@ -191,8 +189,13 @@
             },
             // 显示输入框
             writeComment(){
-                this._layer();
-                this.isFlag = true;
+                if (localStorage.USERINFO) {
+                    this._layer();
+                    this.isFlag = true;
+                }
+                else {
+                    this.$router.push({name: 'login'});
+                }
             },
             // 字数限制
             textareaText(){
@@ -241,23 +244,33 @@
             },
             // 评论点赞
             commentLike(_comment){
-                isLike(_comment, params.commentLike);
+                this._callFn(isLike, _comment, params.commentLike);
+                //isLike(_comment, params.commentLike);
             },
             // 音乐点赞
             musicLike(_music){
-                isLike(_music, params.musicLike);
+                this._callFn(isLike, _music, params.musicLike);
+                //isLike(_music, params.musicLike);
             },
             // 收藏
             musicCollect(_music){
-                isCollect(_music, params.musicCollect);
+                this._callFn(isCollect, _music, params.musicCollect);
+                //isCollect(_music, params.musicCollect);
             },
-            // 总时长
-            totalDuration(){
-                if (this.musicDetail) {
-                    setTimeout(() => {
-                        this.duration = this.$refs.audio.duration;
-
-                    }, 200);
+            // 回调函数
+            _callFn(callName, target, type){
+                if (localStorage.USERINFO) {
+                    callName(target, type);
+                }
+                else {
+                    this.$router.push({name: 'login'});
+                }
+            },
+            // 音频准备就绪
+            ready(){
+                this.songReady = true;
+                if (this.songReady) {
+                    this.duration = this.$refs.audio.duration;
                 }
             },
             // 播放切换
@@ -312,15 +325,6 @@
                 this.flag = true;
             }
         },
-        beforeRouteLeave(to, from){
-            console.log(to);
-            console.log(from);
-        },
-        watch: {
-            $route(){
-                this.totalDuration();
-            },
-        },
         components: {
             NoneData,
             Slider,
@@ -364,37 +368,25 @@
                 position: relative;
             }
         }
-        .control {
-            font-size: 24px;
-            padding: 30px;
-            color: #5d5d5d;
-            box-sizing: border-box;
-            .ctrl-bar {
-                width: 500px;
-                height: 5px;
-                margin-left: 30px;
-                top: 10px;
-                background: #dfdfdf;
-                position: relative;
-                border-radius: 0.2rem;
-                &:after {
-                    content: '';
-                    width: 10px;
-                    height: 10px;
-                    position: absolute;
-                    left: 50px;
-                    top: -3px;
-                    border-radius: 50%;
-                    background-color: #161619;
-                }
-                .mask-bar {
-                    width: 200px;
-                    height: 5px;
-                    display: block;
-                    background-color: #161619;
-                    position: absolute;
-                    border-radius: 0.2rem;
-                }
+        .progress-wrapper {
+            display: flex;
+            height: 80px;
+            margin: 0px 30px;
+            align-items: center;
+            .time {
+                flex: 1;
+                color: #333;
+                font-size: 24px;
+                line-height: 30px;
+            }
+            .time-l {
+                text-align: left;
+            }
+            .time-r {
+                text-align: right;
+            }
+            .progress-bar-wrapper {
+                flex: 8
             }
         }
         .lyric-tab {
@@ -568,28 +560,6 @@
                     top: 32px;
                 }
             }
-        }
-    }
-
-    .progress-wrapper {
-        display: flex;
-        height: 80px;
-        margin: 0px 30px;
-        align-items: center;
-        .time {
-            flex: 1;
-            color: #333;
-            font-size: 24px;
-            line-height: 30px;
-        }
-        .time-l {
-            text-align: left;
-        }
-        .time-r {
-            text-align: right;
-        }
-        .progress-bar-wrapper {
-            flex: 8
         }
     }
 

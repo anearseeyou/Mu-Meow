@@ -77,6 +77,7 @@
             // 点赞
             musicLike(music){
                 this._callFn(isLike, music, params.musicLike);
+
             },
             // 收藏
             musicCollect(music){
@@ -111,7 +112,7 @@
                     this.$router.push({name: 'login'});
                 }
             },
-        }
+        },
     }
 </script>
 

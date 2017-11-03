@@ -7,6 +7,13 @@ const LOGIN_CODE = 4001;
 
 export function isLike(target, type) {
     const url = 'http://api.mumiao.distspace.com/web/m2/consumerPraise.do';
+
+    // 处理返回用户信息
+    // const userInfo = JSON.parse(localStorage.getItem('USERINFO'));
+    // const accountId = userInfo.accountId;
+    // const accessToken = userInfo.accessToken;
+
+    // 请求参数
     const data = Object.assign({}, {
         targetId: target.id,
         praiseType: type,

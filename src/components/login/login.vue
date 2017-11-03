@@ -98,6 +98,7 @@
             // 返回
             back(){
                 this.$router.back();
+                this.phomeNum = "";
             },
             // 倒计时
             _countDown(){
@@ -116,11 +117,6 @@
                 }
             }
         },
-        beforeRouteLeave (to, from){
-            if (from.name == 'login') {
-                window.location.reload();
-            }
-        }
     }
 </script>
 

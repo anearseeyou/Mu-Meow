@@ -7,6 +7,12 @@ const LOGIN_CODE = 4001;
 
 export function isCollect(target, type) {
     const url = 'http://api.mumiao.distspace.com/web/m2/consumerCollect.do';
+
+    // 处理返回用户信息
+    // const userInfo = JSON.parse(localStorage.getItem('USERINFO'));
+    // const accountId = userInfo.accountId;
+    // const accessToken = userInfo.accessToken;
+
     // 成功收藏
     const successData = Object.assign({}, {
         collectTargetId: target.id,
@@ -35,6 +41,7 @@ export function isCollect(target, type) {
             }
         ]
     };
+
     // 根据返回的参数 发送不同的请求
     if (target.myIsCollect == false) {
         return axios.post(url, successData, headers).then((res) => {

@@ -24,7 +24,6 @@
         font-size: 26px;
         text-align: center;
         overflow: hidden;
-        // background: rgba(237, 237, 237, 0.3);
         .load-more {
             width: 240px;
             height: 50px;
@@ -32,7 +31,7 @@
             margin: 25px auto;
             padding: 0 10px;
             background: rgba(248, 248, 248, 1);
-            border-radius: 5px;
+            border-radius: 40px;
         }
     }
 </style>
