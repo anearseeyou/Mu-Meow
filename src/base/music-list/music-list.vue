@@ -36,10 +36,12 @@
             <!-- 间隙 -->
             <div class="space"></div>
         </div>
+        <share v-show="flag" @close="close"></share>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import Share from 'base/share/share';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params';
@@ -47,7 +49,8 @@
     export default{
         data(){
             return {
-                playIndex: 0
+                flag: false,
+                playIndex: 0,
             }
         },
         props: {
@@ -77,7 +80,6 @@
             // 点赞
             musicLike(music){
                 this._callFn(isLike, music, params.musicLike);
-
             },
             // 收藏
             musicCollect(music){
@@ -86,11 +88,14 @@
             // 分享
             share(){
                 if (localStorage.USERINFO) {
-                    alert("分享成功");
+                    this.flag = true;
                 }
                 else {
                     this.$router.push({name: 'login'});
                 }
+            },
+            close(){
+                this.flag = false;
             },
             // 跳转详情页
             goDetail(music, posterArray){
@@ -113,6 +118,9 @@
                 }
             },
         },
+        components: {
+            Share
+        }
     }
 </script>
 
@@ -195,24 +203,6 @@
                     right: 0;
                     top: 0;
                 }
-            }
-        }
-        .music-bar {
-            display: flex;
-            height: 60px;
-            color: #aaaaaa;
-            text-align: center;
-            border-top: 1px solid rgba(237, 237, 237, 0.5);
-            border-bottom: 1px solid rgba(237, 237, 237, 0.5);
-            .icon-share-bar, .icon-thumbs-bar, .icon-collect-bar {
-                flex: 33;
-            }
-            .thumbs-num {
-                font-size: 24px;
-                height: 60px;
-                line-height: 60px;
-                margin-left: 80px;
-                padding-top: 6px;
             }
         }
     }

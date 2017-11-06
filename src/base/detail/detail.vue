@@ -627,15 +627,6 @@
         }
     }
 
-    .layer {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 23;
-        background: rgba(0, 0, 0, 0.2);
-    }
-
     .detail-enter-active, .detail-leave-active {
         transition: all 0.3s;
     }

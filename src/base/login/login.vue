@@ -62,6 +62,9 @@
                 inputCode: "",
             }
         },
+        mounted(){
+
+        },
         methods: {
             // 控制手机号位数
             inputText(){
@@ -84,16 +87,22 @@
             },
             // 立即登录
             quickLogin(){
-                requestData(LOGIN_URL, {
-                    mobile: this.phomeNum,
-                    code: this.inputCode
-                }).then((res) => {
-                    if (res.code === ERR_OK) {
-                        let loginInfo = JSON.stringify(res.data);
-                        localStorage.setItem('USERINFO', loginInfo);
-                        this.back();
-                    }
-                })
+                if (this.phomeNum && this.inputCode) {
+                    requestData(LOGIN_URL, {
+                        mobile: this.phomeNum,
+                        code: this.inputCode
+                    }).then((res) => {
+                        if (res.code === ERR_OK) {
+                            let loginInfo = JSON.stringify(res.data);
+                            localStorage.setItem('USERINFO', loginInfo);
+                            this.back();
+                        }
+                    })
+                }
+                else {
+                    alert("请登录");
+                }
+
             },
             // 返回
             back(){

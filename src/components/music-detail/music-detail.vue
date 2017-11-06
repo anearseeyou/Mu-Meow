@@ -13,7 +13,7 @@
         data(){
             return {
                 musicDetail: {},
-                postersArr: []
+                postersArr: [],
             }
         },
         mounted(){
@@ -25,13 +25,21 @@
                 document.body.scrollTop = 0;
                 if (this.$route.params.id) {
                     this.postersArr = this.$route.params.posters;
+                    if (localStorage.USERINFO) {
+                        // 处理返回用户信息
+                        const userInfo = JSON.parse(localStorage.getItem('USERINFO'));
+                        var accountId = userInfo.accountId;
+                        var accessToken = userInfo.accessToken;
+                    }
                     requestData(URL, {
                         musicId: this.$route.params.id,
-                        accountId: params.accountId,
-                        accessToken: params.accessToken
+                        accountId: accountId,
+                        accessToken: accessToken
                     }).then((res) => {
                         if (res.code === ERR_OK) {
                             this.musicDetail = res.data;
+                            console.log(accountId);
+                            // console.log(this.musicDetail);
                         }
                     });
                 }

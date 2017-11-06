@@ -27,15 +27,22 @@
 
 <script type="text/ecmascript-6">
     export default{
+        props: {
+            height: {
+                type: Number,
+                default: 0
+            }
+        },
         methods: {
             shareClose(){
                 this.$emit('close');
-            }
+            },
         }
     }
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
+
     .share-layer {
         width: 100%;
         background: #FFF;

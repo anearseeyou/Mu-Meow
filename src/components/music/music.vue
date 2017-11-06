@@ -53,10 +53,12 @@
                     page: params.page,
                     pageSize: params.morePageSize,
                     movieId: this.homeData.id,
+                    accountId: params.accountId,
+                    accessToken: params.accessToken
                 }).then((res) => {
                     if (res.code === ERR_OK) {
                         this.homeData.music = res.data;
-                        console.log(this.homeData.music);
+                        // console.log(this.homeData.music);
                     }
                 })
             }
@@ -68,7 +70,9 @@
         },
         watch: {
             $route(){
-                this._updateMusicList();
+                if (localStorage.USERINFO) {
+                    this._updateMusicList();
+                }
             }
         }
     }

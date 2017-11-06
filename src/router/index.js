@@ -57,7 +57,7 @@ const MusicDetail = (resolve) => {
 }
 
 const Login = (resolve) => {
-    import('components/login/login').then((module) => {
+    import('base/login/login').then((module) => {
         resolve(module)
     })
 }

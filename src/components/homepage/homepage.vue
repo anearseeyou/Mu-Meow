@@ -30,11 +30,14 @@
                 <router-view :homeData="homeData"></router-view>
             </keep-alive>
         </div>
+        <!-- 弹层 -->
+        <share @shareLayer="shareLayer" v-show="flag" @close="close"></share>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import ContentNav from 'components/content-nav/content-nav';
+    import Share from 'base/share/share';
     import {requestData} from 'src/api/request';
     import {ERR_OK} from 'api/request';
     import {params} from 'src/api/params';
@@ -45,6 +48,7 @@
     export default {
         data(){
             return {
+                flag: false,
                 addPage: 3,
                 homeData: {},
                 arrayData: [],
@@ -120,6 +124,12 @@
                 this.touch.moveX = 0;
                 this.touch.distanceX = 0;
             },
+            shareLayer(){
+                this.flag = true;
+            },
+            close(){
+                this.flag = false;
+            },
             // 加载首页数据
             _loadHomeData(){
                 for (let i = 1; i < 3; i++) {
@@ -175,9 +185,11 @@
                 bannerSlider.style.transform = 'translateX(' + x + 'px)';
                 bannerSlider.style.webkitTransform = 'translateX(' + x + 'px)';
             },
+
         },
         components: {
             ContentNav,
+            Share
         },
     }
 </script>

@@ -2,13 +2,17 @@
 
 /* ------------------------------------------------------------ */
 
-/* ----- 公共样式 ----- */
+/* ----- 间隙 ----- */
 
 .space {
   width: 100%;
   height: 20px;
   background: rgba(237, 237, 237, 0.3);
 }
+
+/* ------------------------------------------------------------ */
+
+/* ----- 头部 ----- */
 
 .head-wrap {
   width: 100%;
@@ -49,6 +53,43 @@
       background: url('../img/share.png') no-repeat;
       background-size: 100% 100%;
     }
+  }
+}
+
+/* ------------------------------------------------------------ */
+
+/* ----- 弹层 ----- */
+
+.layer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 23;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ------------------------------------------------------------ */
+
+/* ----- 小按钮 ----- */
+
+.music-bar {
+  display: flex;
+  height: 60px;
+  color: #aaaaaa;
+  text-align: center;
+  border-top: 1px solid rgba(237, 237, 237, 0.5);
+  border-bottom: 1px solid rgba(237, 237, 237, 0.5);
+  .icon-share-bar, .icon-thumbs-bar, .icon-collect-bar, .icon-copy-bar {
+    flex: 33;
+  }
+  .thumbs-num {
+    font-size: 24px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 80px;
+    padding-top: 6px;
   }
 }
 
@@ -114,6 +155,17 @@
 // 复制
 .icon-copy-bar {
   background-image: url("../img/lines-copy.png");
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 30px;
+    background: rgba(237, 237, 237, 0.8);
+    position: absolute;
+    right: 0;
+    top: 15px;
+  }
 }
 
 // 分享
