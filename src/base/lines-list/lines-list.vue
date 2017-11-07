@@ -32,6 +32,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import Clipboard from 'clipboard';
     import {isLike} from 'src/api/isLike';
     import {isCollect} from 'src/api/isCollect';
     import {params} from 'src/api/params';
@@ -44,19 +45,22 @@
             }
         },
         methods: {
+            // 复制歌词
             linesCopy(){
-                let clipboard = new Clipboard({
+                let clipboard = new Clipboard('.icon-copy-bar', {
                     target: () => {
-                        document.querySelector(copied);
+                        document.querySelector('.line-text');
                     }
                 });
                 clipboard.on('success', () => {
-                    alert('复制成功');
+                    console.log("复制成功");
                 });
             },
+            // 点赞
             linesLike(lines){
                 this._callFn(isLike, lines, params.linesLike);
             },
+            // 收藏
             linesCollect(lines){
                 this._callFn(isCollect, lines, params.linesCollect);
             },
