@@ -90,14 +90,14 @@
             .line-text {
                 font-size: 28px;
                 line-height: 60px;
-                color: #5D5D5D;
+                color: #333;
                 text-indent: 2em;
                 text-align: justify;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                -webkit-line-clamp: 4;
+                -webkit-line-clamp: 5;
             }
         }
     }

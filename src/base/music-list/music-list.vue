@@ -4,7 +4,7 @@
         <div class="music" v-for="(music,index) in musicList.music">
             <!-- 内容 -->
             <div class="music-origin">
-                <div class="music-title">- 电影原声 -</div>
+                <div class="title">- 电影原声 -</div>
                 <div class="music-info" @click="goDetail(music,musicList)">
                     <p class="music-name">{{ music.name }}</p>
                     <p class="music-sing">{{ music.singer }}</p>
@@ -131,12 +131,6 @@
         .music-origin {
             padding: 0 40px;
             margin-bottom: 40px;
-        }
-        .music-title {
-            font-size: 24px;
-            color: #aaaaaa;
-            text-align: center;
-            margin: 40px 0;
         }
         .music-name {
             font-size: 36px;

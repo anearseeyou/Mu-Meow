@@ -330,6 +330,12 @@
             Slider,
             Share,
             ProgressBar
+        },
+        watch: {
+            $route(){
+                this.$refs.audio.pause();
+                this.$refs.playIcon.className = 'play-bar';
+            }
         }
     }
 </script>
@@ -455,56 +461,7 @@
         .comment-list {
             margin-left: 30px;
         }
-        .ratings-list {
-            margin-bottom: 40px;
-            position: relative;
-            .user-portrait {
-                width: 100px;
-                height: 100px;
-                & > img {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 50%;
-                    border: 1px solid #ededed;
-                }
-            }
-            .user-info {
-                width: calc(100% - 20px);
-                line-height: 26px;
-                color: #5D5D5D;
-                .user-name {
-                    width: 100%;
-                    height: 60px;
-                    line-height: 60px;
-                    font-size: 30px;
-                    margin-bottom: 5px;
-                }
-                .rat-date {
-                    font-size: 24px;
-                    color: #959595;
-                }
-                & > span {
-                    display: inline-block;
-                }
-                &:after {
-                    content: '';
-                    display: block;
-                    height: 1px;
-                    width: 100%;
-                    background: rgb(237, 237, 237);
-                }
-            }
-            .fabu-num {
-                font-size: 24px;
-                margin-top: 5px;
-                margin-right: 30px;
-            }
-            .change-sty {
-                font-size: 28px;
-                line-height: 50px;
-                margin: 20px 30px 20px 0;
-            }
-        }
+
         .rat-footer {
             height: 98px;
             line-height: 98px;

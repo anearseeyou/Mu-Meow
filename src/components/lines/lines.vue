@@ -66,6 +66,11 @@
             LinesList,
             NoneData,
             MoreData
+        },
+        watch: {
+            $route(){
+                this._updateMusicList();
+            }
         }
     }
 </script>
