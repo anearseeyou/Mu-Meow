@@ -62,6 +62,12 @@ const Login = (resolve) => {
     })
 }
 
+const SearchList = (resolve) => {
+    import('components/search-list/search-list').then((module) => {
+        resolve(module)
+    })
+}
+
 // 路由实例
 Vue.use(Router);
 
@@ -76,6 +82,7 @@ export default new Router({
             component: Homepage,
         },
         {
+            name: 'home',
             path: '/homepage',
             redirect: '/homepage/music',
             component: Homepage,
@@ -100,15 +107,18 @@ export default new Router({
             ]
         },
         {
+            name: 'recommend',
             path: '/recommend',
             component: Recommend,
         },
         {
+            name: 'search',
             path: '/search',
             component: Search,
         },
         {
-            path: '/main',
+            name: 'mine',
+            path: '/mine',
             component: Main,
         },
         {
@@ -120,6 +130,11 @@ export default new Router({
             name: 'login',
             path: '/mumeow/login',
             component: Login
+        },
+        {
+            name: 'search-list',
+            path: '/search/search-list',
+            component: SearchList
         }
     ]
 });

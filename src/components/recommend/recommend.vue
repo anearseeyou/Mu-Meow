@@ -6,17 +6,20 @@
                 <span class="movie-title">幕喵推荐</span>
             </div>
         </div>
-        <!-- banner -->
-        <div class="title">- 推荐电影 -</div>
         <!-- 电影海报 -->
         <div class="recommend-banner">
             <img class="recommend-poster" :src="recommend.poster">
         </div>
         <div class="deliveryDate">{{ recommend.release }}</div>
+        <div class="space"></div>
+        <music-list :music-list="recommend"></music-list>
+        <lines-list :lines-list="recommend"></lines-list>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import MusicList from 'base/music-list/music-list';
+    import LinesList from 'base/lines-list/lines-list';
     import {requestData, ERR_OK} from 'src/api/request';
     import {params} from 'src/api/params';
 
@@ -25,7 +28,7 @@
     export default{
         data(){
             return {
-                recommend: {}
+                recommend: {},
             }
         },
         created(){
@@ -43,17 +46,30 @@
                     }
                 })
             }
+        },
+        components: {
+            MusicList,
+            LinesList
         }
     }
 </script>
 
 <style lang="less" rel="stylesheet/less">
 
-    .recommend-banner{
-        margin:0 30px;
-        .recommend-poster{
-            width: 100%;
-            height: 100%;
+    .recommend-wrap {
+        .recommend-banner {
+            margin: 30px 30px 0 30px;
+            .recommend-poster {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .deliveryDate {
+            font-size: 34px;
+            text-align: center;
+            margin: 40px 0;
         }
     }
+
+
 </style>

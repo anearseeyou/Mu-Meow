@@ -22,7 +22,7 @@
 </script>
 
 <style lang="less" rel="stylesheet/less">
-    
+
     .footer-nav {
         margin-bottom: 98px;
     }

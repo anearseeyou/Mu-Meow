@@ -27,7 +27,6 @@
         <!-- 加载更多 -->
         <more-data v-show="commentData != 0" @loadMore="loadMore" :more-data="moreData"></more-data>
     </div>
-
 </template>
 
 <script type="text/ecmascript-6">
@@ -37,7 +36,7 @@
     import {requestData, ERR_OK} from 'api/request';
     import {params} from 'api/params';
 
-    const URL = 'http://api.mumiao.distspace.com/web/m2getMovieComment.do';
+    const URL = 'http://api.mumiao.distspace.com/web/m2/getMovieComment.do';
 
     export default{
         data(){
@@ -105,7 +104,7 @@
         },
         watch: {
             $route(){
-                this._loadCommentData();
+                // this._loadCommentData();
             }
         }
     }

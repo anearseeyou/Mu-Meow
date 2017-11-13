@@ -36,17 +36,9 @@
     z-index: 22;
     color: #ffffff;
     font-size: 36px;
-    .back-wrap, .share-wrap {
-      width: 100px;
-      height: 100%;
-      position: absolute;
-      top: 0;
-    }
-    .back-wrap {
-      left: 0;
-    }
-    .share-wrap {
-      right: 0;
+    display: flex;
+    .back-wrap, .share-wrap, .search-bar {
+      flex: 1;
     }
     .back-btn {
       width: 18px;
@@ -54,10 +46,16 @@
       background: url('../img/back.png') no-repeat;
       background-size: 100% 100%;
     }
-    .share-btn {
+    .share-btn, .search-btn {
       width: 30px;
       height: 30px;
+    }
+    .share-btn {
       background: url('../img/share.png') no-repeat;
+      background-size: 100% 100%;
+    }
+    .search-btn {
+      background: url('../img/search-nc.png') no-repeat;
       background-size: 100% 100%;
     }
   }
@@ -152,6 +150,29 @@
     line-height: 60px;
     margin-left: 80px;
     padding-top: 6px;
+  }
+}
+
+/* ------------------------------------------------------------ */
+
+/* ----- Tab切换 ----- */
+
+.tab {
+  font-size: 28px;
+  height: 100px;
+  line-height: 100px;
+  display: flex;
+  text-align: center;
+  .tab-list {
+    flex: 1;
+  }
+  .cur-underline {
+    border-bottom: 2px solid #000;
+  }
+  .tab-text {
+    width: 60px;
+    height: 70px;
+    margin: 0 auto;
   }
 }
 

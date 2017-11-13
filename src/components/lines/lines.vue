@@ -69,7 +69,7 @@
         },
         watch: {
             $route(){
-                this._updateMusicList();
+                // this._updateMusicList();
             }
         }
     }

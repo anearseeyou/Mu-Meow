@@ -2,29 +2,26 @@
     <div class="nav-wrapper">
         <div class="nav">
             <div class="nav-music">
-                <span v-show="routerChange == 0" class="music-text">原声音乐</span>
-                <span v-show="routerChange == 1" class="music-text">经典台词</span>
-                <span v-show="routerChange == 2" class="music-text">电影故事</span>
-                <span v-show="routerChange == 3" class="music-text">影片短评</span>
+                <span class="music-text">{{ navText }}</span>
             </div>
-            <div class="nav-item" @click="routerChange = 0">
+            <div class="nav-item">
                 <router-link to="/homepage/music">
-                    <span class="icon-music-bar" :class="{current:routerChange == 0}"></span>
+                    <span class="icon-music-bar"></span>
                 </router-link>
             </div>
-            <div class="nav-item" @click="routerChange = 1">
+            <div class="nav-item">
                 <router-link to="/homepage/lines">
-                    <span class="icon-line-bar" :class="{current:routerChange == 1}"></span>
+                    <span class="icon-line-bar"></span>
                 </router-link>
             </div>
-            <div class="nav-item" @click="routerChange = 2">
+            <div class="nav-item">
                 <router-link to="/homepage/story">
-                    <span class="icon-story-bar" :class="{current:routerChange == 2}"></span>
+                    <span class="icon-story-bar"></span>
                 </router-link>
             </div>
-            <div class="nav-item" @click="routerChange = 3">
+            <div class="nav-item">
                 <router-link to="/homepage/comment">
-                    <span class="icon-rat-bar" :class="{current:routerChange == 3}"></span>
+                    <span class="icon-rat-bar"></span>
                 </router-link>
             </div>
         </div>
@@ -37,12 +34,31 @@
     export default{
         data(){
             return {
-                routerChange: 0
+                navText: ""
             }
         },
-        mounted(){
-            if (this.routerChange === 0) {
-                this.$router.push('/homepage/music');
+        created(){
+            this.routeChange();
+        },
+        methods: {
+            routeChange(){
+                if (this.$route.path === '/homepage/music') {
+                    this.navText = "原生音乐";
+                }
+                else if (this.$route.path === '/homepage/lines') {
+                    this.navText = "经典台词";
+                }
+                else if (this.$route.path === '/homepage/story') {
+                    this.navText = "电影故事";
+                }
+                else if (this.$route.path === '/homepage/comment') {
+                    this.navText = "影片短评";
+                }
+            },
+        },
+        watch: {
+            $route(){
+                this.routeChange();
             }
         }
     }
@@ -64,9 +80,6 @@
                 display: block;
                 &:last-child {
                     padding-left: 30px;
-                }
-                &.active > span:before {
-                    color: #161619;
                 }
             }
         }
@@ -99,39 +112,36 @@
         background-repeat: no-repeat;
     }
 
-    // 音乐
-    .nav .icon-music-bar {
+    .active {
+        color: #161619;
+        .icon-music-bar {
+            background-image: url("img/music-c.png");
+        }
+        .icon-line-bar {
+            background-image: url("img/lines-c.png");
+        }
+        .icon-story-bar {
+            background-image: url("img/story-c.png");
+        }
+        .icon-rat-bar {
+            background-image: url("img/ratings-c.png");
+        }
+    }
+
+    .icon-music-bar {
         background-image: url("img/music-nc.png");
     }
 
-    .nav .icon-music-bar.current {
-        background-image: url("img/music-c.png");
-    }
-
-    // 台词
-    .nav .icon-line-bar {
+    .icon-line-bar {
         background-image: url("img/lines-nc.png");
     }
 
-    .nav .icon-line-bar.current {
-        background-image: url("img/lines-c.png");
-    }
-
-    // 故事
-    .nav .icon-story-bar {
+    .icon-story-bar {
         background-image: url("img/story-nc.png");
     }
 
-    .nav .icon-story-bar.current {
-        background-image: url("img/story-c.png");
-    }
-
-    // 评论
-    .nav .icon-rat-bar {
+    .icon-rat-bar {
         background-image: url("img/ratings-nc.png");
     }
 
-    .nav .icon-rat-bar.current {
-        background-image: url("img/ratings-c.png");
-    }
 </style>

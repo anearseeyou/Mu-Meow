@@ -71,7 +71,7 @@
         watch: {
             $route(){
                 if (localStorage.USERINFO) {
-                    this._updateMusicList();
+                    // this._updateMusicList();
                 }
             }
         }
