@@ -2,7 +2,7 @@
     <div class="homepage-wrap" v-cloak>
         <!-- 首页头部 -->
         <div class="head-wrap">
-            <div class="header">
+            <div class="head">
                 <a class="movie-code"></a>
                 <span class="movie-title">{{ homeData.name }}</span>
             </div>
@@ -196,35 +196,19 @@
 
 <style lang="less" rel="stylesheet/less">
     .head-wrap {
-        width: 100%;
-        height: 88px;
-        .header {
-            width: 100%;
-            height: 88px;
-            line-height: 88px;
-            text-align: center;
-            background: #161619;
-            box-sizing: border-box;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 150;
-            .movie-code {
-                width: 40px;
-                height: 40px;
-                position: absolute;
-                left: 30px;
-                top: 24px;
-                background: url('img/code.png') no-repeat;
-                background-size: 100% 100%;
-            }
-            .movie-title {
-                font-size: 36px;
-                flex: 1;
-                color: #FFF;
-            }
+        .movie-code {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            left: 30px;
+            top: 24px;
+            background: url('img/code.png') no-repeat;
+            background-size: 100% 100%;
+        }
+        .movie-title {
+            font-size: 36px;
+            flex: 1;
+            color: #FFF;
         }
     }
 
@@ -249,20 +233,5 @@
         }
     }
 
-    .banner-info {
-        display: flex;
-        margin-bottom: 40px;
-        .deliveryTime, .score {
-            font-size: 24px;
-            flex: 0.5;
-            color: #aaaaaa;
-        }
-        .deliveryTime {
-            padding-left: 30px;
-        }
-        .score {
-            text-align: right;
-            padding-right: 30px;
-        }
-    }
+
 </style>

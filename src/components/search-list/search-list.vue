@@ -23,7 +23,7 @@
         <div v-show="tabChange == 0">
             <div class="search-music"
                  v-for="movie in searchData.movie"
-                 @click="movieDetail(movie.id)">
+                 @click="moviePage(movie)">
                 <div class="search-pic">
                     <img :src="movie.poster ? movie.poster :'static/img/no-poster.png'">
                 </div>
@@ -38,7 +38,7 @@
         <div v-show="tabChange == 1">
             <div class="search-music"
                  v-for="(music,index) in searchData.music"
-                 @click="musicDetail(music,index,music.posters)">
+                 @click="musicPage(music)">
                 <div class="search-pic">
                     <img :src="music.poster ? music.poster : 'static/img/no-poster.png'">
                 </div>
@@ -77,14 +77,31 @@
         },
         methods: {
             back(){
-                this.$router.back();
+                this.$router.push({
+                    name: 'search'
+                });
+                this.$emit('showNav');
             },
             search(){
                 this._search(this.searchContent);
+                this.searchContent = "";
             },
-            movieDetail(){
+            moviePage(movieData){
+                this.$router.push({
+                    name: 'search-movie-page',
+                    params: {
+                        movie: movieData
+                    }
+                })
             },
-            musicDetail(){
+            musicPage(musicData){
+                this.$router.push({
+                    name: 'search-music-page',
+                    params: {
+                        posters: this.searchData.movie,
+                        music: musicData
+                    }
+                })
             },
             _loadSearchData(){
                 if (this.$route.params.content) {

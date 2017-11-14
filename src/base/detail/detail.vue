@@ -343,7 +343,11 @@
 <style scoped lang="less" rel="stylesheet/less">
 
     .lyric-wrapper {
+        .play-title {
+            flex: 8;
+        }
         .play-video {
+            height: 490px;
             .lines-poster {
                 width: 100%;
                 height: 100%;
@@ -371,6 +375,7 @@
                 background-image: url("img/music-pause.png");
             }
             .slider-wrap {
+                height: 400px;
                 position: relative;
             }
         }

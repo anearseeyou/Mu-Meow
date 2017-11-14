@@ -20,8 +20,8 @@ const Search = (resolve) => {
     })
 }
 
-const Main = (resolve) => {
-    import('components/Main/Main').then((module) => {
+const Mine = (resolve) => {
+    import('components/mine/mine').then((module) => {
         resolve(module)
     })
 }
@@ -64,6 +64,18 @@ const Login = (resolve) => {
 
 const SearchList = (resolve) => {
     import('components/search-list/search-list').then((module) => {
+        resolve(module)
+    })
+}
+
+const SearchMoviePage = (resolve) => {
+    import('components/search-movie-page/search-movie-page').then((module) => {
+        resolve(module)
+    })
+}
+
+const SearchMusicPage = (resolve) => {
+    import('components/search-music-page/search-music-page').then((module) => {
         resolve(module)
     })
 }
@@ -119,7 +131,7 @@ export default new Router({
         {
             name: 'mine',
             path: '/mine',
-            component: Main,
+            component: Mine,
         },
         {
             name: 'musicdetail',
@@ -135,6 +147,16 @@ export default new Router({
             name: 'search-list',
             path: '/search/search-list',
             component: SearchList
+        },
+        {
+            name: 'search-movie-page',
+            path: '/search/search-list/search-movie-page',
+            component: SearchMoviePage
+        },
+        {
+            name: 'search-music-page',
+            path: '/search/search-list/search-music-page',
+            component: SearchMusicPage
         }
     ]
 });

@@ -24,7 +24,8 @@
                     alert("请输入内容");
                 }
                 else {
-                    this.searchContent = ""
+                    this.$emit('hideNav');
+                    this.searchContent = "";
                     this.$router.push({
                         name: 'search-list',
                         params: {

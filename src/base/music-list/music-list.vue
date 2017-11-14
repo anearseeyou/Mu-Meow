@@ -69,7 +69,6 @@
                         audios[i].parentElement.className = 'music-play';
                     }
                     event.currentTarget.children[0].play();
-                    console.log(event.currentTarget.className);
                     event.currentTarget.className = 'music-pause';
                 }
                 else {

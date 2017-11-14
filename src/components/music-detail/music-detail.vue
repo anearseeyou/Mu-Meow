@@ -38,7 +38,7 @@
                     }).then((res) => {
                         if (res.code === ERR_OK) {
                             this.musicDetail = res.data;
-                            console.log(accountId);
+                            // console.log(accountId);
                             // console.log(this.musicDetail);
                         }
                     });

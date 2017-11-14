@@ -57,6 +57,9 @@
 <style lang="less" rel="stylesheet/less">
 
     .recommend-wrap {
+        .movie-title{
+            width: 100%;
+        }
         .recommend-banner {
             margin: 30px 30px 0 30px;
             .recommend-poster {
