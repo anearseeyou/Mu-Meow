@@ -1,16 +1,10 @@
 <template>
     <div class="mine-wrap">
-        <!-- 头部固定 -->
-        <div class="header mine-center">
-            <div class="movie-code"></div>
-        </div>
         <div class="mine-bgc">
             <!-- 用户头像 -->
-            <div class="mine-pic">
-                <div class="user-pic">
-                    <img class="avart" @click="avatarUpload" >
-                </div>
-                <span v-if="!isLogin" class="font48">152</span>
+            <div class="mine-info">
+                <img class="avart" :src="avatar" @click="avatarUpload">
+                <span v-if="!isLogin" class="font48">{{ phone }}</span>
                 <span v-else="isLogin" @click="signIn">请登录</span>
             </div>
         </div>
@@ -53,14 +47,28 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import {params} from 'api/params';
+
     export default{
         data(){
             return {
                 isLogin: false,
-                noneNews: false
+                noneNews: false,
+                phone: 0,
+                avatar: ""
             }
         },
+        created(){
+            this._loginInfo();
+        },
         methods: {
+            _loginInfo(){
+                if (localStorage.USERINFO) {
+                    this.phone = params.phone;
+                    this.avatar = params.avatar
+                }
+            },
+
             avatarUpload(){
 
             },
@@ -84,32 +92,27 @@
 </script>
 
 <style lang="less" rel="stylesheet/less">
-    .mine-center {
-        position: inherit;
-    }
 
-    .mine-bgc {
-        width: 100%;
-        height: 300px;
-        background: url("img/mine.png") no-repeat;
-        background-size: 100% 100%;
-        position: relative;
-        margin-bottom: 300px;
-        .mine-pic {
-            left: 50%;
-            margin-left: -140px;
-            top: 140px;
-            position: absolute;
-            text-align: center;
-            .user-pic {
-                width: 280px;
-                height: 28px;
-                border-radius: 50%;
-                margin-bottom: 40px;
+    .mine-wrap{
+        .mine-bgc {
+            width: 100%;
+            height: 410px;
+            overflow: hidden;
+            background-size: 100% 100%;
+            background: url("img/mine.png") no-repeat;
+            .mine-info {
+                width: 210px;
+                position: absolute;
+                left: 50%;
+                top: 165px;
+                margin-left: -105px;
+                font-size: 30px;
+                text-align: center;
                 .avart {
-                    width: 280px;
-                    width: 280px;
+                    width: 210px;
+                    width: 200px;
                     border-radius: 50%;
+                    margin-bottom: 10px;
                 }
             }
         }
@@ -118,34 +121,34 @@
     .mine-info {
         width: 100%;
         .user-list {
-            height: 160px;
-            line-height: 162px;
-            margin-left: 40px;
             display: block;
+            height: 100px;
+            line-height: 100px;
+            padding:0 30px;
             border-bottom: 1px solid #ededed;
             .sc-bar, .sc-open {
                 width: 90px;
                 height: 100%;
                 background: url("img/mine-recom.png") no-repeat center center;
-                background-size: 2.5rem 2.5rem;
+                background-size: 30px 30px;
             }
             .sc-open {
                 margin-right: 58px;
                 background: url("img/info-gt.png") no-repeat center center;
-                background-size: 1.1rem 2.2rem;
+                background-size: 22px 44px;
             }
             .sc-text {
                 color: #161619;
-                font-size: 30px;
+                font-size: 26px;
                 margin-left: 30px;
             }
             .mine-fadu {
                 background: url("img/mine-like.png") no-repeat center center;
-                background-size: 2.5rem 2.5rem;
+                background-size: 50px 50px;
             }
             .mine-comment {
                 background: url("img/mine-write.png") no-repeat center center;
-                background-size: 2.5rem 2.5rem;
+                background-size: 50px 50px;
             }
             .mine-news {
                 background: url("img/mine-news.png") no-repeat center center;
